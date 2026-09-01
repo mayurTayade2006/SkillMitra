@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #FAF9F5;
+    --text-primary: #1D2421;
+    --text-secondary: #4A5550;
+    --color-forest: #164B36;
+    --color-saffron: #E28A3B;
+    --color-sage: #789184;
+    --border-color: #E5E2DA;
+  }
+
+  body {
+    background-color: #FAF9F5;
+    color: #1D2421;
+    font-family: 'Manrope', 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #1D2421;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Subtle Topographic Contour Background Pattern */
+.bg-topo-pattern {
+  background-image: radial-gradient(#789184 0.75px, transparent 0.75px), radial-gradient(#164B36 0.5px, #FAF9F5 0.5px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  background-color: #FAF9F5;
+}
+
+.bg-topo-subtle {
+  background-color: #FAF9F5;
+  background-image: linear-gradient(#E5E2DA 0.5px, transparent 0.5px), linear-gradient(90deg, #E5E2DA 0.5px, #FAF9F5 0.5px);
+  background-size: 48px 48px;
+}
+
+/* Modern Editorial Divider */
+.divider-editorial {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E5E2DA 20%, #E5E2DA 80%, transparent);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF9F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D5D1C7;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #789184;
+}
+
+/* Nav Link Underline Hover Effect */
+.nav-link-item {
+  position: relative;
+}
+
+.nav-link-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background-color: #164B36;
+  border-radius: 1px;
+}
