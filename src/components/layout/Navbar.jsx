@@ -42,35 +42,37 @@ export default function Navbar({ onOpenNotifications, unreadCount = 2 }) {
   return (
     <header className={`sticky top-0 z-40 w-full transition-all duration-300 ${
       scrolled 
-        ? 'bg-[#0e1823]/92 backdrop-blur-2xl border-b border-white/[0.14] shadow-[0_4px_20px_rgba(0,0,0,0.5)]' 
-        : 'bg-[#0e1823]/75 backdrop-blur-xl border-b border-white/[0.1]'
+        ? 'bg-[#06101E]/90 backdrop-blur-2xl border-b border-white/[0.14] shadow-[0_8px_32px_rgba(4,14,30,0.7)]' 
+        : 'bg-[#06101E]/75 backdrop-blur-xl border-b border-white/[0.1]'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
           
-          {/* Logo & Brand Identity */}
+          {/* Logo & Brand Identity with Liquid Droplet Glint */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#22D3EE] via-[#A78BFA] to-[#E879F9] flex items-center justify-center text-[#070B10] font-black text-xs shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:rotate-12 transition-transform duration-300">
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-[#38BDF8] via-[#1D4ED8] to-[#93C5FD] flex items-center justify-center text-[#040810] font-black text-xs shadow-[0_0_20px_rgba(56,189,248,0.5)] group-hover:rotate-12 transition-transform duration-300">
               SM
+              {/* Glass Dew Droplet Glint Accent */}
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-white/80 shadow-[0_0_6px_#ffffff] border border-cyan-200" />
             </div>
             
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-sans text-sm font-extrabold tracking-tight text-white group-hover:text-[#22D3EE] transition-colors">
+                <span className="font-sans text-sm font-extrabold tracking-tight text-white group-hover:text-[#38BDF8] transition-colors">
                   SKILLMITRA
                 </span>
-                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-teal-500/15 text-[#22D3EE] border border-teal-500/40 uppercase tracking-wider font-mono">
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-cyan-500/15 text-[#38BDF8] border border-cyan-500/40 uppercase tracking-wider font-mono">
                   SIH26135
                 </span>
               </div>
-              <span className="text-[10px] text-[#CBD5E1] font-mono leading-none">
+              <span className="text-[10px] text-[#93C5FD] font-mono leading-none">
                 GovTech Maharashtra
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-white/[0.08] border border-white/[0.14] backdrop-blur-lg shadow-inner">
+          {/* Desktop Nav Links (Liquid Glass Pill Container) */}
+          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-[#0B1C33]/80 border border-white/[0.14] backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.15)]">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path));
               return (
@@ -79,8 +81,8 @@ export default function Navbar({ onOpenNotifications, unreadCount = 2 }) {
                   to={link.path}
                   className={`px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${
                     isActive
-                      ? 'text-white bg-gradient-to-r from-white/[0.22] to-white/[0.1] border border-white/[0.25] font-extrabold shadow-sm'
-                      : 'text-[#CBD5E1] hover:text-white hover:bg-white/[0.08]'
+                      ? 'text-white bg-gradient-to-r from-[#1D4ED8]/40 to-[#38BDF8]/25 border border-[#38BDF8]/40 font-extrabold shadow-[0_0_16px_rgba(56,189,248,0.3)]'
+                      : 'text-[#94A3B8] hover:text-white hover:bg-white/[0.08]'
                   }`}
                 >
                   {link.name}
@@ -95,7 +97,7 @@ export default function Navbar({ onOpenNotifications, unreadCount = 2 }) {
             {/* Notification Bell */}
             <button
               onClick={onOpenNotifications}
-              className="relative p-2 rounded-lg border border-white/[0.14] bg-white/[0.08] hover:bg-white/[0.15] text-white transition-all group"
+              className="relative p-2 rounded-lg border border-white/[0.14] bg-[#0B1C33]/80 hover:bg-[#122B4D] text-white transition-all group shadow-sm"
               title="Notifications"
             >
               <Bell className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform duration-300" />
@@ -110,11 +112,11 @@ export default function Navbar({ onOpenNotifications, unreadCount = 2 }) {
             <div className="relative">
               <button
                 onClick={() => setRolesDropdownOpen(!rolesDropdownOpen)}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.14] bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-bold transition-all group"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-white/[0.14] bg-[#0B1C33]/80 hover:bg-[#122B4D] text-white text-xs font-bold transition-all group shadow-sm"
               >
-                <GraduationCap className="w-3.5 h-3.5 text-[#A78BFA] group-hover:rotate-12 transition-transform duration-300" />
+                <GraduationCap className="w-3.5 h-3.5 text-[#38BDF8] group-hover:rotate-12 transition-transform duration-300" />
                 <span>Portals</span>
-                <ChevronDown className={`w-3 h-3 text-[#CBD5E1] transition-transform duration-200 ${rolesDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3 h-3 text-[#93C5FD] transition-transform duration-200 ${rolesDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {rolesDropdownOpen && (

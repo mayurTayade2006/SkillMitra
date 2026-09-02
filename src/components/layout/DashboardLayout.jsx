@@ -91,26 +91,28 @@ export default function DashboardLayout({ children, role = "candidate" }) {
     <div className="min-h-screen bg-transparent text-[#F5F7FA] flex overflow-hidden font-sans relative">
       
       {/* =========================================================
-          FIXED NON-COLLAPSING LEFT SIDEBAR (Bright, Luminous Glass)
+          FIXED NON-COLLAPSING LEFT SIDEBAR (Liquid Silk Glass Surface)
           ========================================================= */}
-      <aside className="w-[270px] min-w-[270px] max-w-[270px] h-screen sticky top-0 flex flex-col bg-[#0e1823]/88 backdrop-blur-2xl border-r border-white/[0.14] shadow-[4px_0_24px_rgba(0,0,0,0.5)] shrink-0 z-30 select-none">
+      <aside className="w-[270px] min-w-[270px] max-w-[270px] h-screen sticky top-0 flex flex-col bg-[#06101E]/90 backdrop-blur-2xl border-r border-white/[0.12] shadow-[6px_0_30px_rgba(4,14,30,0.7)] shrink-0 z-30 select-none">
         
-        {/* Brand Header */}
-        <div className="p-5 border-b border-white/[0.12]">
+        {/* Brand Header with Droplet Glint */}
+        <div className="p-5 border-b border-white/[0.1]">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#22D3EE] via-[#A78BFA] to-[#E879F9] flex items-center justify-center text-[#070B10] font-black text-xs shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:rotate-12 transition-transform duration-300">
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-[#38BDF8] via-[#1D4ED8] to-[#93C5FD] flex items-center justify-center text-[#040810] font-black text-xs shadow-[0_0_18px_rgba(56,189,248,0.5)] group-hover:rotate-12 transition-transform duration-300">
               SM
+              {/* Glass Dew Glint */}
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white/90 shadow-[0_0_5px_#ffffff]" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-sans font-extrabold text-sm tracking-tight text-white group-hover:text-[#22D3EE] transition-colors">
+                <span className="font-sans font-extrabold text-sm tracking-tight text-white group-hover:text-[#38BDF8] transition-colors">
                   SKILLMITRA
                 </span>
-                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-teal-500/15 text-[#22D3EE] border border-teal-500/40 font-bold">
+                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/15 text-[#38BDF8] border border-cyan-500/40 font-bold">
                   SIH26135
                 </span>
               </div>
-              <span className="block text-[10px] text-[#CBD5E1] font-mono mt-0.5">GovTech Maharashtra</span>
+              <span className="block text-[10px] text-[#93C5FD] font-mono mt-0.5">GovTech Maharashtra</span>
             </div>
           </Link>
         </div>
@@ -121,10 +123,10 @@ export default function DashboardLayout({ children, role = "candidate" }) {
           {/* Section 1: LIVE DEMO PORTALS SWITCHER */}
           <div className="space-y-1.5">
             <div className="px-2.5 pb-1 flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] font-mono">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#93C5FD] font-mono">
                 Live Demo Portals
               </span>
-              <span className="w-2 h-2 rounded-full bg-[#4ADE80] shadow-[0_0_8px_#4ADE80] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8] animate-pulse" />
             </div>
 
             {demoPortals.map((portal) => {
@@ -137,8 +139,8 @@ export default function DashboardLayout({ children, role = "candidate" }) {
                   to={portal.path}
                   className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all group ${
                     isCurrent
-                      ? 'bg-gradient-to-r from-white/[0.18] to-white/[0.08] text-white font-extrabold border border-white/[0.22] shadow-[0_0_12px_rgba(255,255,255,0.08)]'
-                      : 'text-[#CBD5E1] hover:text-white hover:bg-white/[0.08]'
+                      ? 'bg-gradient-to-r from-[#1D4ED8]/35 to-[#38BDF8]/20 text-white font-extrabold border border-[#38BDF8]/40 shadow-[0_0_14px_rgba(56,189,248,0.25)]'
+                      : 'text-[#94A3B8] hover:text-white hover:bg-white/[0.06]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -146,12 +148,12 @@ export default function DashboardLayout({ children, role = "candidate" }) {
                       className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
                       style={{ backgroundColor: portal.color, boxShadow: isCurrent ? `0 0 8px ${portal.color}` : 'none' }}
                     />
-                    <Icon className={`w-3.5 h-3.5 shrink-0 group-hover:rotate-12 transition-transform duration-300 ${isCurrent ? 'text-[#22D3EE]' : 'text-[#94A3B8] group-hover:text-white'}`} />
+                    <Icon className={`w-3.5 h-3.5 shrink-0 group-hover:rotate-12 transition-transform duration-300 ${isCurrent ? 'text-[#38BDF8]' : 'text-[#64748B] group-hover:text-white'}`} />
                     <span className="truncate">{portal.name}</span>
                   </div>
 
                   {portal.badge && (
-                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.08] text-[#E2E8F0] border border-white/[0.12] group-hover:text-white">
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.06] text-[#E2E8F0] border border-white/[0.1] group-hover:text-white">
                       {portal.badge}
                     </span>
                   )}
