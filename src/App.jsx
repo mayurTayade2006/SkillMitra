@@ -1,5 +1,9 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+
+// 3D Motion Background System (Persistent across all routes)
+import PersistentBackground from './components/3d/PersistentBackground';
+import PrismaticClickEffect from './components/common/PrismaticClickEffect';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -26,37 +30,62 @@ import TrainingProviderDashboard from './pages/training/TrainingProviderDashboar
 // Security Center
 import SecurityCenterPage from './pages/SecurityCenterPage';
 
+// Scroll to top helper on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
-    <Routes>
-      {/* Landing & Gateway */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
+    <div className="relative min-h-screen bg-[#070B10] text-[#F5F7FA] selection:bg-[#22D3EE]/30 selection:text-[#22D3EE]">
+      {/* PERSISTENT 3D MOTION BACKGROUND CANVAS */}
+      <PersistentBackground />
 
-      {/* Candidate Suite */}
-      <Route path="/candidate" element={<CandidateDashboard />} />
-      <Route path="/candidate/skills" element={<SkillIntelligencePage />} />
-      <Route path="/candidate/careers" element={<CareerRecommendationsPage />} />
-      <Route path="/candidate/learning" element={<LearningRoadmapPage />} />
-      <Route path="/candidate/jobs" element={<JobMatchesPage />} />
-      <Route path="/candidate/certificates" element={<VerifiedCredentialsPage />} />
+      {/* INTERACTIVE PRISMATIC CLICK & ROTATORY FX */}
+      <PrismaticClickEffect />
 
-      {/* Government Intelligence Suite */}
-      <Route path="/government" element={<GovernmentDashboard />} />
-      <Route path="/government/analytics" element={<GovernmentDashboard />} />
-      <Route path="/government/skills" element={<MaharashtraHeatmapPage />} />
-      <Route path="/government/forecast" element={<FutureDemandPage />} />
-      <Route path="/government/programs" element={<TrainingProgramsImpactPage />} />
+      {/* Auto Scroll to Top on Navigation */}
+      <ScrollToTop />
 
-      {/* Employer & Training Suite */}
-      <Route path="/employer" element={<EmployerDashboard />} />
-      <Route path="/training" element={<TrainingProviderDashboard />} />
+      {/* Foreground Interactive Application */}
+      <div className="relative z-10">
+        <Routes>
+          {/* Landing & Gateway */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-      {/* Security & Trust Center */}
-      <Route path="/security" element={<SecurityCenterPage />} />
+          {/* Candidate Suite */}
+          <Route path="/candidate" element={<CandidateDashboard />} />
+          <Route path="/candidate/skills" element={<SkillIntelligencePage />} />
+          <Route path="/candidate/careers" element={<CareerRecommendationsPage />} />
+          <Route path="/candidate/learning" element={<LearningRoadmapPage />} />
+          <Route path="/candidate/jobs" element={<JobMatchesPage />} />
+          <Route path="/candidate/certificates" element={<VerifiedCredentialsPage />} />
 
-      {/* Fallback to Home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+          {/* Government Intelligence Suite */}
+          <Route path="/government" element={<GovernmentDashboard />} />
+          <Route path="/government/analytics" element={<GovernmentDashboard />} />
+          <Route path="/government/skills" element={<MaharashtraHeatmapPage />} />
+          <Route path="/government/forecast" element={<FutureDemandPage />} />
+          <Route path="/government/programs" element={<TrainingProgramsImpactPage />} />
+
+          {/* Employer & Training Suite */}
+          <Route path="/employer" element={<EmployerDashboard />} />
+          <Route path="/training" element={<TrainingProviderDashboard />} />
+
+          {/* Security & Trust Center */}
+          <Route path="/security" element={<SecurityCenterPage />} />
+
+          {/* Fallback to Home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </div>
   );
 }

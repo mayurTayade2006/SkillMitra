@@ -19,6 +19,14 @@ export const CURRENT_USER = {
   verifiedBadgesCount: 4,
 };
 
+export const MAHARASHTRA_STATS = {
+  candidatesTrained: 50000,
+  certifiedOnChain: 38420,
+  employedInMH: 24680,
+  employmentRate: 64.3,
+  activeDistricts: 36,
+};
+
 export const ROLES_DATA = [
   {
     id: "candidate",

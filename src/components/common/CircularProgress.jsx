@@ -2,9 +2,9 @@ import React from 'react';
 
 export default function CircularProgress({ 
   percentage = 78, 
-  size = 90, 
-  strokeWidth = 7, 
-  color = "forest",
+  size = 96, 
+  strokeWidth = 8, 
+  color = "emerald",
   label = "Readiness",
   sublabel = "",
   showPercentage = true,
@@ -14,51 +14,66 @@ export default function CircularProgress({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   const colorMap = {
-    forest: { stroke: "#164B36", text: "text-[#164B36]" },
-    saffron: { stroke: "#E28A3B", text: "text-[#E28A3B]" },
-    terracotta: { stroke: "#C9634C", text: "text-[#C9634C]" },
-    sage: { stroke: "#789184", text: "text-[#789184]" },
+    emerald: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-[#A7F3D0]" },
+    teal: { stroke: "#18B8A2", gradient: ["#18B8A2", "#5EEAD4"], text: "text-[#5EEAD4]" },
+    saffron: { stroke: "#E5A34A", gradient: ["#E5A34A", "#FBBF24"], text: "text-[#FDE68A]" },
+    mint: { stroke: "#A7F3D0", gradient: ["#A7F3D0", "#6EE7B7"], text: "text-[#A7F3D0]" },
+    forest: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-[#A7F3D0]" },
   };
 
-  const selectedColor = colorMap[color] || colorMap.forest;
+  const selected = colorMap[color] || colorMap.emerald;
+  const gradientId = `circ-grad-${color}-${size}`;
 
   return (
-    <div className="relative flex flex-col items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative flex flex-col items-center justify-center shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="transform -rotate-90">
+        <defs>
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={selected.gradient[0]} />
+            <stop offset="100%" stopColor={selected.gradient[1]} />
+          </linearGradient>
+        </defs>
+
         {/* Background Track Circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#E5E2DA"
+          stroke="rgba(255, 255, 255, 0.08)"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
-        {/* Progress Circle */}
+
+        {/* Glowing Progress Circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={selectedColor.stroke}
+          stroke={`url(#${gradientId})`}
           strokeWidth={strokeWidth}
           fill="transparent"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          className="transition-all duration-700 ease-out"
+          className="transition-all duration-1000 ease-out drop-shadow-[0_0_8px_rgba(22,163,111,0.5)]"
         />
       </svg>
       
       {/* Center Text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-1">
         {showPercentage && (
-          <span className="font-sans font-black text-base sm:text-xl tracking-tight text-[#1D2421]">
+          <span className="font-sans font-black text-lg sm:text-xl tracking-tight text-[#F5F7F4] font-mono">
             {percentage}%
           </span>
         )}
         {label && (
-          <span className="text-[9px] text-[#789184] font-bold uppercase tracking-wider">
+          <span className="text-[9px] text-[#94A3B8] font-bold uppercase tracking-wider font-mono">
             {label}
+          </span>
+        )}
+        {sublabel && (
+          <span className="text-[8px] text-[#64748B]">
+            {sublabel}
           </span>
         )}
       </div>

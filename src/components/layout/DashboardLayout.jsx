@@ -14,102 +14,161 @@ import {
   Users, 
   FileText, 
   Bell, 
-  Menu, 
-  X, 
   Search, 
   ChevronRight, 
-  LogOut,
-  GraduationCap
+  LogOut, 
+  GraduationCap, 
+  Activity, 
+  Cpu, 
+  Layers, 
+  CheckCircle2 
 } from 'lucide-react';
 import { CURRENT_USER } from '../../data/mockData';
-import RoleSwitcherBar from '../common/RoleSwitcherBar';
 import NotificationDrawer from '../common/NotificationDrawer';
 import MitraAIAssistant from '../common/MitraAIAssistant';
 
 export default function DashboardLayout({ children, role = "candidate" }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Navigation configurations based on role
+  // 1. LIVE DEMO PORTALS (Permanent in Left Sidebar)
+  const demoPortals = [
+    { name: "Candidate Portal", path: "/candidate", icon: GraduationCap, color: "#4ADE80", badge: "Live Seeker" },
+    { name: "Skill Intelligence", path: "/candidate/skills", icon: Sparkles, color: "#22D3EE", badge: "AI Diagnostics" },
+    { name: "Govt Intelligence", path: "/government", icon: Building2, color: "#22D3EE", badge: "Outcome Radar" },
+    { name: "District Heatmap", path: "/government/skills", icon: MapPin, color: "#F59E0B", badge: "36 Districts" },
+    { name: "Employer Suite", path: "/employer", icon: Briefcase, color: "#A78BFA", badge: "Pre-Assessed" },
+    { name: "Training Provider", path: "/training", icon: BookOpen, color: "#4ADE80", badge: "NCVET Hub" },
+  ];
+
+  // 2. CONTEXT MODULE NAVIGATION
   const candidateNav = [
     { name: "Overview", path: "/candidate", icon: LayoutDashboard },
-    { name: "Skill Assessment", path: "/candidate/skills", icon: Sparkles, badge: "Live" },
-    { name: "Career Path", path: "/candidate/careers", icon: Compass },
-    { name: "Learning", path: "/candidate/learning", icon: BookOpen },
-    { name: "Jobs", path: "/candidate/jobs", icon: Briefcase, badge: "24 Matches" },
+    { name: "Skill Assessment", path: "/candidate/skills", icon: Sparkles },
+    { name: "Career Pathways", path: "/candidate/careers", icon: Compass },
+    { name: "Learning Roadmap", path: "/candidate/learning", icon: BookOpen },
+    { name: "Job Matches", path: "/candidate/jobs", icon: Briefcase, badge: "24" },
     { name: "Credentials", path: "/candidate/certificates", icon: Award },
     { name: "Security & Trust", path: "/security", icon: ShieldCheck },
   ];
 
   const govNav = [
-    { name: "Government Intelligence", path: "/government", icon: Building2 },
-    { name: "District Heatmap", path: "/government/skills", icon: MapPin, badge: "36 Districts" },
-    { name: "Demand Forecasting", path: "/government/forecast", icon: TrendingUp },
-    { name: "Program Impact & ROI", path: "/government/programs", icon: FileText },
-    { name: "Security & Trust", path: "/security", icon: ShieldCheck },
+    { name: "Statewide Intelligence", path: "/government", icon: Building2 },
+    { name: "District Skill Map", path: "/government/skills", icon: MapPin, badge: "36" },
+    { name: "Future Demand Forecast", path: "/government/forecast", icon: TrendingUp },
+    { name: "Training Impact & ROI", path: "/government/programs", icon: FileText },
+    { name: "Security & Compliance", path: "/security", icon: ShieldCheck },
   ];
 
   const employerNav = [
-    { name: "Employer Suite", path: "/employer", icon: Briefcase },
-    { name: "Candidate Search", path: "/employer", icon: Users, badge: "AI Match" },
+    { name: "Talent Pipeline", path: "/employer", icon: Users, badge: "AI Matched" },
+    { name: "Post New Vacancy", path: "/employer", icon: Briefcase },
     { name: "District Heatmap", path: "/government/skills", icon: MapPin },
-    { name: "Security & Trust", path: "/security", icon: ShieldCheck },
+    { name: "Security Center", path: "/security", icon: ShieldCheck },
   ];
 
   const trainingNav = [
-    { name: "Provider Overview", path: "/training", icon: BookOpen },
-    { name: "Cohort Progression", path: "/training", icon: Users },
+    { name: "Cohort Progression", path: "/training", icon: Users, badge: "8 Batches" },
+    { name: "Curriculum Modules", path: "/candidate/learning", icon: BookOpen },
     { name: "Issued Credentials", path: "/candidate/certificates", icon: Award },
-    { name: "Statewide Outcomes", path: "/government", icon: Building2 },
+    { name: "State Analytics", path: "/government", icon: Building2 },
   ];
 
-  const currentNavList = 
+  const currentContextNav = 
     role === "government" ? govNav : 
     role === "employer" ? employerNav : 
     role === "training" ? trainingNav : 
     candidateNav;
 
-  return (
-    <div className="min-h-screen bg-[#FAF9F5] text-[#1D2421] flex flex-col font-sans">
-      
-      {/* Quick Demo Switcher Bar */}
-      <RoleSwitcherBar />
+  const currentRoleLabel = 
+    role === "government" ? "GOVERNMENT INTELLIGENCE" : 
+    role === "employer" ? "EMPLOYER SUITE" : 
+    role === "training" ? "TRAINING PROVIDER" : 
+    "CANDIDATE SUITE";
 
-      <div className="flex-1 flex overflow-hidden">
+  return (
+    <div className="min-h-screen bg-transparent text-[#F5F7FA] flex overflow-hidden font-sans relative">
+      
+      {/* =========================================================
+          FIXED NON-COLLAPSING LEFT SIDEBAR (Bright, Luminous Glass)
+          ========================================================= */}
+      <aside className="w-[270px] min-w-[270px] max-w-[270px] h-screen sticky top-0 flex flex-col bg-[#0e1823]/88 backdrop-blur-2xl border-r border-white/[0.14] shadow-[4px_0_24px_rgba(0,0,0,0.5)] shrink-0 z-30 select-none">
         
-        {/* Sidebar for Desktop */}
-        <aside className="hidden lg:flex lg:flex-col w-64 bg-[#FAF9F5] border-r border-[#E5E2DA] shrink-0">
-          
-          {/* Brand Header */}
-          <div className="p-4 border-b border-[#E5E2DA] flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-7 h-7 rounded bg-[#164B36] flex items-center justify-center text-[#FAF9F5] font-bold text-xs shadow-subtle">
-                SM
-              </div>
-              <div>
-                <span className="font-sans font-extrabold text-sm tracking-tight text-[#1D2421]">
+        {/* Brand Header */}
+        <div className="p-5 border-b border-white/[0.12]">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#22D3EE] via-[#A78BFA] to-[#E879F9] flex items-center justify-center text-[#070B10] font-black text-xs shadow-[0_0_15px_rgba(34,211,238,0.5)] group-hover:rotate-12 transition-transform duration-300">
+              SM
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-sans font-extrabold text-sm tracking-tight text-white group-hover:text-[#22D3EE] transition-colors">
                   SKILLMITRA
                 </span>
-                <span className="block text-[10px] text-[#789184] leading-none mt-0.5 font-medium">GovTech Maharashtra</span>
+                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-teal-500/15 text-[#22D3EE] border border-teal-500/40 font-bold">
+                  SIH26135
+                </span>
               </div>
-            </Link>
+              <span className="block text-[10px] text-[#CBD5E1] font-mono mt-0.5">GovTech Maharashtra</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Scrollable Navigation Body */}
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+          
+          {/* Section 1: LIVE DEMO PORTALS SWITCHER */}
+          <div className="space-y-1.5">
+            <div className="px-2.5 pb-1 flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] font-mono">
+                Live Demo Portals
+              </span>
+              <span className="w-2 h-2 rounded-full bg-[#4ADE80] shadow-[0_0_8px_#4ADE80] animate-pulse" />
+            </div>
+
+            {demoPortals.map((portal) => {
+              const Icon = portal.icon;
+              const isCurrent = location.pathname === portal.path;
+
+              return (
+                <Link
+                  key={portal.name}
+                  to={portal.path}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all group ${
+                    isCurrent
+                      ? 'bg-gradient-to-r from-white/[0.18] to-white/[0.08] text-white font-extrabold border border-white/[0.22] shadow-[0_0_12px_rgba(255,255,255,0.08)]'
+                      : 'text-[#CBD5E1] hover:text-white hover:bg-white/[0.08]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span 
+                      className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
+                      style={{ backgroundColor: portal.color, boxShadow: isCurrent ? `0 0 8px ${portal.color}` : 'none' }}
+                    />
+                    <Icon className={`w-3.5 h-3.5 shrink-0 group-hover:rotate-12 transition-transform duration-300 ${isCurrent ? 'text-[#22D3EE]' : 'text-[#94A3B8] group-hover:text-white'}`} />
+                    <span className="truncate">{portal.name}</span>
+                  </div>
+
+                  {portal.badge && (
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.08] text-[#E2E8F0] border border-white/[0.12] group-hover:text-white">
+                      {portal.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Current Role Banner */}
-          <div className="px-4 py-2 bg-[#F3F0E8] border-b border-[#E5E2DA] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#164B36]" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#4A5550]">
-                {role === "government" ? "Government View" : role === "employer" ? "Employer Suite" : role === "training" ? "Training Provider" : "Candidate Portal"}
+          {/* Section 2: CONTEXT MODULE NAVIGATION */}
+          <div className="space-y-1.5 pt-3 border-t border-white/[0.1]">
+            <div className="px-2.5 pb-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] font-mono">
+                {currentRoleLabel}
               </span>
             </div>
-          </div>
 
-          {/* Nav Links */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-1">
-            {currentNavList.map((item) => {
+            {currentContextNav.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
@@ -117,20 +176,20 @@ export default function DashboardLayout({ children, role = "candidate" }) {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-semibold transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all group ${
                     isActive
-                      ? 'bg-[#EBF2EE] text-[#164B36] font-bold shadow-subtle border border-[#D1E0D7]'
-                      : 'text-[#4A5550] hover:text-[#1D2421] hover:bg-[#F3F0E8]'
+                      ? 'bg-gradient-to-r from-[#22D3EE]/25 to-[#A78BFA]/20 text-white font-extrabold border border-[#22D3EE]/50 shadow-[0_0_14px_rgba(34,211,238,0.25)]'
+                      : 'text-[#CBD5E1] hover:text-white hover:bg-white/[0.08]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#164B36]' : 'text-[#789184]'}`} />
+                    <Icon className={`w-3.5 h-3.5 group-hover:rotate-12 transition-transform duration-300 ${isActive ? 'text-[#22D3EE]' : 'text-[#94A3B8] group-hover:text-white'}`} />
                     <span>{item.name}</span>
                   </div>
 
                   {item.badge && (
-                    <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-semibold ${
-                      isActive ? 'bg-[#FFFFFF] text-[#164B36] border border-[#D1E0D7]' : 'bg-[#E5E2DA] text-[#4A5550]'
+                    <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                      isActive ? 'bg-[#22D3EE]/30 text-white border border-[#22D3EE]/50' : 'bg-white/[0.08] text-[#E2E8F0]'
                     }`}>
                       {item.badge}
                     </span>
@@ -140,146 +199,104 @@ export default function DashboardLayout({ children, role = "candidate" }) {
             })}
           </div>
 
-          {/* User Profile Footer Card */}
-          <div className="p-3.5 border-t border-[#E5E2DA] bg-[#F3F0E8]">
-            <div className="flex items-center gap-2.5">
-              <img
-                src={CURRENT_USER.avatar}
-                alt={CURRENT_USER.name}
-                className="w-8 h-8 rounded-full object-cover border border-[#E5E2DA]"
-              />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-bold text-[#1D2421] truncate">
-                  {role === "government" ? "Rajesh Patil" : CURRENT_USER.name}
-                </div>
-                <div className="text-[10px] text-[#789184] truncate">
-                  {role === "government" ? "Director (MSSDS)" : `${CURRENT_USER.district}, MH`}
-                </div>
+        </div>
+
+        {/* User Profile Footer Card */}
+        <div className="p-4 border-t border-white/[0.12] bg-[#13202e]/90 backdrop-blur-md">
+          <div className="flex items-center gap-3">
+            <img
+              src={CURRENT_USER.avatar}
+              alt={CURRENT_USER.name}
+              className="w-8 h-8 rounded-lg object-cover border border-white/[0.2] shadow-sm"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold text-white truncate">
+                {role === "government" ? "Rajesh Patil" : CURRENT_USER.name}
               </div>
-              <Link to="/login" title="Switch Role">
-                <LogOut className="w-3.5 h-3.5 text-[#789184] hover:text-[#C9634C] transition-colors" />
-              </Link>
+              <div className="text-[10px] text-[#94A3B8] truncate font-mono">
+                {role === "government" ? "Director (MSSDS)" : `${CURRENT_USER.district}, MH`}
+              </div>
             </div>
+            <Link to="/login" title="Switch Portal">
+              <LogOut className="w-3.5 h-3.5 text-[#94A3B8] hover:text-[#F59E0B] transition-colors" />
+            </Link>
+          </div>
+        </div>
+
+      </aside>
+
+      {/* =========================================================
+          MAIN APPLICATION AREA (Header + Content)
+          ========================================================= */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10">
+        
+        {/* BRIGHT COMPACT TOP HEADER */}
+        <header className="h-14 bg-[#0e1823]/88 backdrop-blur-xl border-b border-white/[0.14] px-6 sm:px-8 flex items-center justify-between gap-4 sticky top-0 z-20 shrink-0 shadow-sm">
+          
+          {/* Left: Breadcrumbs / Title */}
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-[#94A3B8] font-mono uppercase font-bold">Portal</span>
+            <ChevronRight className="w-3 h-3 text-[#94A3B8]" />
+            <span className="font-extrabold text-white">
+              {role === "government" 
+                ? "Government Intelligence Suite" 
+                : role === "employer" 
+                ? "Corporate Hiring Suite" 
+                : role === "training" 
+                ? "Vocational Training Partner Portal" 
+                : "Candidate Career & Skill Intelligence"}
+            </span>
           </div>
 
-        </aside>
-
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-          
-          {/* Dashboard Header Bar */}
-          <header className="h-14 bg-[#FAF9F5] border-b border-[#E5E2DA] px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
+          {/* Right: Actions */}
+          <div className="flex items-center gap-3">
             
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-1.5 rounded-md border border-[#E5E2DA] text-[#1D2421]"
-              >
-                <Menu className="w-4 h-4" />
-              </button>
-
-              <div>
-                <h1 className="text-sm sm:text-base font-bold text-[#1D2421] flex items-center gap-2">
-                  {role === "government" 
-                    ? "Government Intelligence Portal" 
-                    : role === "employer" 
-                    ? "Corporate Talent Hub" 
-                    : `Good morning, ${CURRENT_USER.name.split(' ')[0]}.`}
-                </h1>
-              </div>
+            {/* AI Intelligence Status Pill */}
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/40 text-[#22D3EE] text-[10px] font-mono font-bold shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-pulse" />
+              <span>Mitra AI v2.4 Active</span>
             </div>
 
-            {/* Header Right Actions */}
-            <div className="flex items-center gap-2.5">
-              
-              {/* Notification Bell */}
-              <button
-                onClick={() => setNotificationsOpen(true)}
-                className="relative p-2 rounded-md border border-[#E5E2DA] bg-[#FAF9F5] hover:bg-[#F3F0E8] text-[#4A5550] hover:text-[#1D2421] transition-colors shadow-subtle"
-                title="Notifications"
-              >
-                <Bell className="w-4 h-4" />
-                <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#E28A3B] text-[9px] font-bold text-white">
-                  2
-                </span>
-              </button>
+            {/* Notification Bell */}
+            <button
+              onClick={() => setNotificationsOpen(true)}
+              className="relative p-2 rounded-lg border border-white/[0.14] bg-white/[0.08] hover:bg-white/[0.15] text-[#F5F7FA] transition-all"
+              title="Notifications"
+            >
+              <Bell className="w-3.5 h-3.5" />
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#F59E0B] text-[8px] font-bold text-[#070B10] shadow-sm">
+                2
+              </span>
+            </button>
 
-              {/* Portal Selector Button */}
-              <Link
-                to="/login"
-                className="px-3 py-1.5 rounded-md border border-[#E5E2DA] bg-[#FFFFFF] hover:bg-[#F3F0E8] text-xs font-semibold text-[#1D2421] transition-colors flex items-center gap-1.5 shadow-subtle"
-              >
-                <GraduationCap className="w-3.5 h-3.5 text-[#164B36]" />
-                <span className="hidden sm:inline">Switch Role</span>
-              </Link>
-            </div>
+            {/* Quick Switch Role Gateway */}
+            <Link
+              to="/login"
+              className="px-3 py-1.5 rounded-lg border border-white/[0.14] bg-white/[0.08] hover:bg-white/[0.15] text-xs font-bold text-white transition-all flex items-center gap-1.5"
+            >
+              <GraduationCap className="w-3.5 h-3.5 text-[#A78BFA]" />
+              <span className="hidden md:inline">Switch Portal</span>
+            </Link>
 
-          </header>
+          </div>
 
-          {/* Page Body View */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-            {children}
-          </main>
+        </header>
 
-        </div>
+        {/* Page Content Container */}
+        <main className="flex-1 px-6 sm:px-8 py-8 max-w-[1400px] w-full mx-auto">
+          {children}
+        </main>
 
       </div>
 
-      {/* Floating MitraAI Assistant everywhere in dashboard */}
-      <MitraAIAssistant />
-
-      {/* Slide-out Notification Drawer */}
-      <NotificationDrawer 
-        isOpen={notificationsOpen} 
-        onClose={() => setNotificationsOpen(false)} 
+      {/* Global Slide-Over Notification Drawer */}
+      <NotificationDrawer
+        isOpen={notificationsOpen}
+        onClose={() => setNotificationsOpen(false)}
       />
 
-      {/* Mobile Drawer */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="fixed inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
-          <div className="fixed inset-y-0 left-0 w-64 bg-[#FAF9F5] border-r border-[#E5E2DA] p-4 flex flex-col">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E2DA]">
-              <span className="font-extrabold text-[#1D2421] text-base">SKILLMITRA</span>
-              <button onClick={() => setSidebarOpen(false)} className="p-1 rounded-md text-[#789184]">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto py-3 space-y-1">
-              {currentNavList.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold ${
-                    location.pathname === item.path ? 'bg-[#EBF2EE] text-[#164B36] font-bold border border-[#D1E0D7]' : 'text-[#4A5550] hover:bg-[#F3F0E8]'
-                  }`}
-                >
-                  <item.icon className="w-4 h-4" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </div>
-
-            {/* User Profile in Mobile Drawer */}
-            <div className="p-3 border-t border-[#E5E2DA] bg-[#F3F0E8] rounded-lg mt-auto flex items-center gap-2.5">
-              <img
-                src={CURRENT_USER.avatar}
-                alt={CURRENT_USER.name}
-                className="w-8 h-8 rounded-full object-cover border border-[#E5E2DA]"
-              />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-bold text-[#1D2421] truncate">
-                  {role === "government" ? "Rajesh Patil" : CURRENT_USER.name}
-                </div>
-                <div className="text-[10px] text-[#789184] truncate">
-                  {role === "government" ? "Director (MSSDS)" : `${CURRENT_USER.district}, MH`}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Persistent Mitra AI Copilot Button & Drawer */}
+      <MitraAIAssistant />
 
     </div>
   );

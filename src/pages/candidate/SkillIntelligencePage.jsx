@@ -8,9 +8,12 @@ import {
   AlertCircle, 
   ArrowRight, 
   BookOpen, 
-  Sparkles,
-  Info,
-  TrendingUp
+  Sparkles, 
+  Activity, 
+  Layers, 
+  Zap, 
+  TrendingUp,
+  Target
 } from 'lucide-react';
 
 export default function SkillIntelligencePage() {
@@ -20,40 +23,41 @@ export default function SkillIntelligencePage() {
 
   return (
     <DashboardLayout role="candidate">
-      <div className="space-y-7">
+      <div className="space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-[#E5E2DA]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1D2421] tracking-tight">
-                Where your skills stand.
-              </h1>
-              <span className="text-[10px] font-bold px-2 py-0.2 rounded bg-[#EBF2EE] text-[#164B36] border border-[#D1E0D7]">
-                Live Benchmark
+              <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#22D3EE]/10 text-[#22D3EE] border border-[#22D3EE]/25 font-mono uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] inline-block mr-1.5 animate-pulse" />
+                Live Competency Diagnostics
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-[#4A5550] mt-1">
-              Comparing your verified capabilities against current industry hiring criteria in Maharashtra.
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight mt-2">
+              Where Your Skills Stand
+            </h1>
+            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1 font-mono">
+              Comparing your verified capabilities against current industry hiring criteria across Maharashtra.
             </p>
           </div>
 
           <Link
             to="/candidate/learning"
-            className="px-4 py-2 rounded-md bg-[#164B36] hover:bg-[#113A2A] text-[#FAF9F5] text-xs font-bold transition-colors flex items-center gap-1.5 shadow-subtle self-start md:self-auto"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#22D3EE] to-[#A78BFA] text-[#070B10] text-xs font-bold transition-all shadow-glow-teal flex items-center gap-2 hover:opacity-90 self-start md:self-auto"
           >
-            <span>View Learning Roadmap</span>
+            <span>View Adaptive Roadmap</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {/* Target Role Selector Tabs */}
-        <div className="space-y-2">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[#789184]">
-            Target Career Pathway
+        <div className="space-y-2.5">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] font-mono">
+            Target Career Benchmark Profile
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
             {Object.keys(TARGET_ROLES).map((roleKey) => {
               const item = TARGET_ROLES[roleKey];
               const isSelected = selectedRoleKey === roleKey;
@@ -62,17 +66,17 @@ export default function SkillIntelligencePage() {
                 <button
                   key={roleKey}
                   onClick={() => setSelectedRoleKey(roleKey)}
-                  className={`p-3.5 rounded-xl border text-left transition-all ${
+                  className={`p-4 rounded-xl border text-left transition-all ${
                     isSelected
-                      ? 'bg-[#EBF2EE] border-[#164B36] text-[#164B36] shadow-subtle ring-1 ring-[#164B36]'
-                      : 'bg-[#FFFFFF] border-[#E5E2DA] hover:bg-[#F3F0E8] text-[#1D2421]'
+                      ? 'bg-[#121B23] border-[#22D3EE]/40 text-[#F5F7FA] shadow-surface border-l-4 border-l-[#22D3EE]'
+                      : 'bg-[#0D141B]/60 border-white/[0.06] hover:border-white/[0.15] text-[#94A3B8]'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[10px] text-[#789184] mb-1">
+                  <div className="flex items-center justify-between text-[10px] text-[#64748B] mb-1 font-mono">
                     <span>{item.category}</span>
-                    <span className="font-mono font-bold text-[#164B36]">{item.overallMatch}% fit</span>
+                    <span className="font-bold text-[#4ADE80]">{item.overallMatch}% fit</span>
                   </div>
-                  <div className="text-xs font-extrabold truncate text-[#1D2421]">
+                  <div className="text-xs font-bold truncate text-[#F5F7FA]">
                     {item.title}
                   </div>
                 </button>
@@ -81,27 +85,27 @@ export default function SkillIntelligencePage() {
           </div>
         </div>
 
-        {/* Main Grid: Left = Skills Comparison, Right = Recommendations & Insight */}
+        {/* Main Grid: Left = Skills Comparison, Right = Recommendations & AI Insight */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Left Column: Horizontal Comparison Bars (8 Cols) */}
-          <div className="lg:col-span-8 space-y-4">
+          <div className="lg:col-span-8 space-y-6">
             
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#FFFFFF] border border-[#E5E2DA] shadow-card space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#ECE9E1]">
+            <div className="surface-card rounded-2xl p-6 sm:p-7 space-y-5">
+              <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
                 <div>
-                  <h3 className="text-sm font-bold text-[#1D2421]">
+                  <h3 className="text-base font-bold text-[#F5F7FA]">
                     Competency Matrix Comparison
                   </h3>
-                  <p className="text-xs text-[#789184]">Your score vs role benchmark threshold</p>
+                  <p className="text-xs text-[#64748B] font-mono">Your score vs role benchmark threshold in Maharashtra</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-[#789184] block">Market Package</span>
-                  <span className="text-xs font-bold text-[#164B36] font-mono">{roleData.salaryRange}</span>
+                  <span className="text-[10px] text-[#64748B] uppercase block font-mono">Market Package</span>
+                  <span className="text-xs font-bold text-[#4ADE80] font-mono">{roleData.salaryRange}</span>
                 </div>
               </div>
 
-              {/* Horizontal Skill Bars List */}
+              {/* Animated Horizontal Skill Bars List */}
               <div className="space-y-3">
                 {roleData.currentSkills.map((skill, idx) => (
                   <SkillBar
@@ -116,25 +120,26 @@ export default function SkillIntelligencePage() {
             </div>
 
             {/* "Where to focus next" 3 Recommendations */}
-            <div className="p-5 rounded-xl bg-[#FAF9F5] border border-[#E5E2DA] space-y-3 shadow-subtle">
-              <div className="text-xs font-bold text-[#1D2421]">
-                Where to focus next (3 High-Impact Recommendations):
+            <div className="surface-card rounded-2xl p-6 space-y-4">
+              <div className="text-xs font-bold text-[#F5F7FA] flex items-center gap-2 font-mono">
+                <Zap className="w-4 h-4 text-[#F59E0B]" />
+                <span>Priority Action Plan (3 High-Impact Skill Interventions):</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
-                <div className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E5E2DA] shadow-subtle">
-                  <span className="text-[10px] font-bold text-[#E28A3B] uppercase block">1. Priority Skill</span>
-                  <div className="font-bold text-[#1D2421] mt-0.5">Advanced Power BI</div>
-                  <div className="text-[10px] text-[#789184] mt-0.5">DAX measures & dashboards</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1 text-xs">
+                <div className="p-4 rounded-xl bg-[#0D141B] border border-white/[0.06] hover:border-[#F59E0B]/30 transition-all border-t-2 border-t-[#F59E0B]">
+                  <span className="text-[10px] font-bold text-[#F59E0B] uppercase block font-mono">1. Priority Skill</span>
+                  <div className="font-bold text-[#F5F7FA] mt-1">Advanced Power BI</div>
+                  <div className="text-[10px] text-[#94A3B8] mt-0.5">DAX measures & dimensional modeling</div>
                 </div>
-                <div className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E5E2DA] shadow-subtle">
-                  <span className="text-[10px] font-bold text-[#164B36] uppercase block">2. Foundation</span>
-                  <div className="font-bold text-[#1D2421] mt-0.5">Applied Statistics</div>
-                  <div className="text-[10px] text-[#789184] mt-0.5">A/B testing & probability</div>
+                <div className="p-4 rounded-xl bg-[#0D141B] border border-white/[0.06] hover:border-[#4ADE80]/30 transition-all border-t-2 border-t-[#4ADE80]">
+                  <span className="text-[10px] font-bold text-[#4ADE80] uppercase block font-mono">2. Mathematical Core</span>
+                  <div className="font-bold text-[#F5F7FA] mt-1">Applied Statistics</div>
+                  <div className="text-[10px] text-[#94A3B8] mt-0.5">Hypothesis testing & regression</div>
                 </div>
-                <div className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E5E2DA] shadow-subtle">
-                  <span className="text-[10px] font-bold text-[#789184] uppercase block">3. Integration</span>
-                  <div className="font-bold text-[#1D2421] mt-0.5">Python Pandas</div>
-                  <div className="text-[10px] text-[#789184] mt-0.5">Data wrangling scripts</div>
+                <div className="p-4 rounded-xl bg-[#0D141B] border border-white/[0.06] hover:border-[#22D3EE]/30 transition-all border-t-2 border-t-[#22D3EE]">
+                  <span className="text-[10px] font-bold text-[#22D3EE] uppercase block font-mono">3. Data Pipelines</span>
+                  <div className="font-bold text-[#F5F7FA] mt-1">Python Pandas & ETL</div>
+                  <div className="text-[10px] text-[#94A3B8] mt-0.5">Data wrangling & API ingest</div>
                 </div>
               </div>
             </div>
@@ -142,45 +147,48 @@ export default function SkillIntelligencePage() {
           </div>
 
           {/* Right Column: Overall Readiness & SkillMitra Insight Block (4 Cols) */}
-          <div className="lg:col-span-4 space-y-4">
+          <div className="lg:col-span-4 space-y-6">
             
             {/* Overall Fit Card */}
-            <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E5E2DA] shadow-card text-center space-y-3">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#789184]">
+            <div className="surface-card rounded-2xl p-6 text-center space-y-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] font-mono">
                 Overall Role Readiness
               </span>
               
-              <div className="text-4xl font-black font-sans text-[#164B36]">
+              <div className="text-5xl font-black font-mono text-[#4ADE80]">
                 {roleData.overallMatch}%
               </div>
 
-              <div className="text-xs text-[#4A5550]">
-                Target: <strong>{roleData.title}</strong>
+              <div className="text-xs text-[#94A3B8]">
+                Target: <strong className="text-[#F5F7FA]">{roleData.title}</strong>
               </div>
 
-              <div className="pt-3 border-t border-[#ECE9E1] text-xs text-[#789184] flex justify-between">
-                <span>With Gaps Closed:</span>
-                <strong className="text-[#164B36]">94% Readiness</strong>
+              <div className="pt-4 border-t border-white/[0.06] text-xs text-[#94A3B8] flex justify-between font-mono">
+                <span>With Gaps Bridged:</span>
+                <strong className="text-[#4ADE80]">94% Projected</strong>
               </div>
             </div>
 
-            {/* Elegant SkillMitra Insight Block */}
-            <div className="p-6 rounded-2xl bg-[#FDF4EC] border border-[#F8DCBE] shadow-subtle space-y-3">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#E28A3B] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#E28A3B]" />
-                SKILLMITRA INSIGHT
+            {/* SkillMitra Neural Insight Block */}
+            <div className="surface-card rounded-2xl p-6 space-y-4 border-l-4 border-l-[#22D3EE]">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-[#22D3EE] flex items-center gap-2 font-mono">
+                <Sparkles className="w-4 h-4 text-[#22D3EE]" />
+                <span>SKILLMITRA AI REASONING</span>
               </div>
 
-              <p className="text-xs text-[#1D2421] leading-relaxed bg-[#FFFFFF] p-3.5 rounded-lg border border-[#F8DCBE] font-medium">
+              {/* Animated AI Data Pulse Line */}
+              <div className="h-0.5 w-full bg-gradient-to-r from-[#22D3EE] via-[#A78BFA] to-[#4ADE80] animate-data-pulse rounded-full" />
+
+              <p className="text-xs text-[#F5F7FA] leading-relaxed bg-[#0D141B] p-4 rounded-xl border border-white/[0.06]">
                 "{roleData.aiExplanation}"
               </p>
 
               <Link
                 to="/candidate/learning"
-                className="w-full py-2.5 rounded-md bg-[#164B36] hover:bg-[#113A2A] text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-subtle"
+                className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#22D3EE] to-[#A78BFA] text-[#070B10] text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-glow-teal hover:opacity-90"
               >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Start Learning Pathway</span>
+                <BookOpen className="w-4 h-4" />
+                <span>Launch Adaptive Pathway</span>
               </Link>
             </div>
 

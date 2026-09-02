@@ -1,61 +1,70 @@
 import React, { useState } from 'react';
 import { MAHARASHTRA_DISTRICTS } from '../../data/mockData';
-import { MapPin } from 'lucide-react';
+import { MapPin, Activity, Sparkles } from 'lucide-react';
 
 export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }) {
   const [hoveredDistrict, setHoveredDistrict] = useState(null);
 
   const districtNodes = [
-    { key: "Mumbai", x: 120, y: 270, r: 22, label: "Mumbai MMR", color: "#164B36" },
-    { key: "Thane", x: 160, y: 240, r: 18, label: "Thane", color: "#164B36" },
-    { key: "Pune", x: 230, y: 320, r: 24, label: "Pune Hub", color: "#164B36" },
-    { key: "Nashik", x: 210, y: 190, r: 20, label: "Nashik", color: "#E28A3B" },
-    { key: "Kolhapur", x: 220, y: 430, r: 18, label: "Kolhapur", color: "#C9634C" },
-    { key: "Chhatrapati Sambhajinagar", x: 330, y: 220, r: 22, label: "Sambhajinagar", color: "#E28A3B" },
-    { key: "Solapur", x: 350, y: 380, r: 18, label: "Solapur", color: "#C9634C" },
-    { key: "Amravati", x: 490, y: 140, r: 18, label: "Amravati", color: "#789184" },
-    { key: "Nagpur", x: 620, y: 120, r: 22, label: "Nagpur Hub", color: "#164B36" },
+    { key: "Mumbai", x: 120, y: 270, r: 24, label: "Mumbai MMR", color: "#4ADE80", fill: "rgba(74, 222, 128, 0.2)" },
+    { key: "Thane", x: 160, y: 235, r: 18, label: "Thane", color: "#22D3EE", fill: "rgba(34, 211, 238, 0.2)" },
+    { key: "Pune", x: 230, y: 320, r: 26, label: "Pune Hub", color: "#4ADE80", fill: "rgba(74, 222, 128, 0.2)" },
+    { key: "Nashik", x: 210, y: 190, r: 20, label: "Nashik", color: "#F59E0B", fill: "rgba(245, 158, 11, 0.2)" },
+    { key: "Kolhapur", x: 220, y: 430, r: 18, label: "Kolhapur", color: "#F59E0B", fill: "rgba(245, 158, 11, 0.2)" },
+    { key: "Chhatrapati Sambhajinagar", x: 330, y: 220, r: 22, label: "Sambhajinagar", color: "#22D3EE", fill: "rgba(34, 211, 238, 0.2)" },
+    { key: "Solapur", x: 350, y: 380, r: 18, label: "Solapur", color: "#A78BFA", fill: "rgba(167, 139, 250, 0.2)" },
+    { key: "Amravati", x: 490, y: 140, r: 18, label: "Amravati", color: "#94A3B8", fill: "rgba(148, 163, 184, 0.2)" },
+    { key: "Nagpur", x: 620, y: 120, r: 24, label: "Nagpur Hub", color: "#4ADE80", fill: "rgba(74, 222, 128, 0.2)" },
   ];
 
   return (
-    <div className="relative w-full rounded-xl bg-[#FFFFFF] border border-[#E5E2DA] p-5 shadow-subtle">
+    <div className="surface-card rounded-2xl p-5 relative w-full">
       
       {/* Header Info */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold text-[#1D2421]">
-              Maharashtra District Skill Demand Heatmap
+            <h3 className="text-sm font-bold text-[#F5F7FA]">
+              Maharashtra Geospatial Skill Demand Heatmap
             </h3>
-            <span className="text-[10px] font-bold px-2 py-0.2 rounded bg-[#EBF2EE] text-[#164B36] border border-[#D1E0D7]">
-              Geospatial GIS
+            <span className="text-[10px] font-bold px-2 py-0.2 rounded bg-white/[0.04] text-[#22D3EE] border border-white/[0.08] font-mono">
+              36 Districts
             </span>
           </div>
-          <p className="text-xs text-[#789184] mt-0.5">
+          <p className="text-xs text-[#94A3B8] mt-0.5 font-mono">
             Click any regional cluster node to inspect live workforce supply and open industrial vacancies
           </p>
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-2 text-[10px] font-semibold">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#EBF2EE] text-[#164B36] border border-[#D1E0D7]">
-            <span className="w-2 h-2 rounded-full bg-[#164B36]" /> High Demand (85%+)
+        <div className="flex flex-wrap items-center gap-2 text-[10px] font-mono">
+          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#4ADE80]/10 text-[#4ADE80] border border-[#4ADE80]/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" /> High Demand (85%+)
           </span>
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#FDF4EC] text-[#E28A3B] border border-[#F8DCBE]">
-            <span className="w-2 h-2 rounded-full bg-[#E28A3B]" /> Moderate (70-84%)
+          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" /> Moderate (70-84%)
           </span>
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#FAF0ED] text-[#C9634C] border border-[#F5DCD5]">
-            <span className="w-2 h-2 rounded-full bg-[#C9634C]" /> Emerging (&lt;70%)
+          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A78BFA]/10 text-[#A78BFA] border border-[#A78BFA]/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA]" /> Emerging Hub
           </span>
         </div>
       </div>
 
       {/* SVG Canvas Map */}
-      <div className="relative w-full aspect-[16/10] max-h-[440px] flex items-center justify-center bg-[#FAF9F5] rounded-lg border border-[#E5E2DA] p-3 overflow-hidden">
+      <div className="relative w-full aspect-[16/10] max-h-[440px] flex items-center justify-center bg-[#0D141B] rounded-xl border border-white/[0.06] p-3 overflow-hidden shadow-inner">
         <svg
           viewBox="0 0 760 520"
           className="w-full h-full select-none"
         >
+          {/* Subtle Grid Pattern */}
+          <defs>
+            <pattern id="gisMapGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255, 255, 255, 0.02)" strokeWidth="1" />
+            </pattern>
+          </defs>
+
+          <rect width="760" height="520" fill="url(#gisMapGrid)" />
+
           {/* Maharashtra State Boundary Polygon Outline */}
           <path
             d="M 80,240 
@@ -70,19 +79,19 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
                Q 180,480 170,410 
                Q 150,370 120,330 
                Q 70,300 80,240 Z"
-            fill="#F3F0E8"
-            stroke="#E5E2DA"
+            fill="rgba(18, 27, 35, 0.85)"
+            stroke="rgba(255, 255, 255, 0.12)"
             strokeWidth="1.5"
           />
 
           {/* Regional connecting network arcs */}
-          <path d="M 120,270 Q 175,295 230,320" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 230,320 Q 220,255 210,190" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 210,190 Q 270,205 330,220" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 230,320 Q 225,375 220,430" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 330,220 Q 410,180 490,140" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 490,140 Q 555,130 620,120" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-          <path d="M 330,220 Q 340,300 350,380" stroke="#D5D1C7" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+          <path d="M 120,270 Q 175,295 230,320" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 230,320 Q 220,255 210,190" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 210,190 Q 270,205 330,220" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 230,320 Q 225,375 220,430" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 330,220 Q 410,180 490,140" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 490,140 Q 555,130 620,120" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
+          <path d="M 330,220 Q 340,300 350,380" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1.2" strokeDasharray="3 3" fill="none" />
 
           {/* District Interactive Nodes */}
           {districtNodes.map((node) => {
@@ -98,28 +107,27 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
                 onMouseEnter={() => setHoveredDistrict(node.key)}
                 onMouseLeave={() => setHoveredDistrict(null)}
               >
-                {/* Node Outer Ring on Select */}
+                {/* Outer Ring on Selection */}
                 {isSelected && (
                   <circle
                     cx={node.x}
                     cy={node.y}
                     r={node.r + 6}
                     fill="none"
-                    stroke="#164B36"
+                    stroke="#22D3EE"
                     strokeWidth="1.5"
                     strokeDasharray="4 2"
                   />
                 )}
 
-                {/* Main Node Circle */}
+                {/* Main Node */}
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r={isSelected ? node.r + 2 : isHovered ? node.r + 1 : node.r}
-                  fill={isSelected ? "#164B36" : "#FFFFFF"}
-                  stroke={isSelected ? "#0E3324" : node.color}
-                  strokeWidth={isSelected ? "2.5" : "1.5"}
-                  className="shadow-subtle"
+                  fill={isSelected ? node.color : "#121B23"}
+                  stroke={isSelected ? "#F5F7FA" : node.color}
+                  strokeWidth={isSelected ? "2" : "1.5"}
                 />
 
                 {/* Center Core Indicator */}
@@ -127,7 +135,7 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
                   cx={node.x}
                   cy={node.y}
                   r="3.5"
-                  fill={isSelected ? "#FAF9F5" : node.color}
+                  fill={isSelected ? "#070B10" : node.color}
                 />
 
                 {/* District Label Text */}
@@ -135,10 +143,10 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
                   x={node.x}
                   y={node.y + node.r + 14}
                   textAnchor="middle"
-                  fill={isSelected ? "#164B36" : "#1D2421"}
-                  fontSize={isSelected ? "12" : "11"}
+                  fill={isSelected ? "#22D3EE" : "#F5F7FA"}
+                  fontSize={isSelected ? "11.5" : "11"}
                   fontWeight={isSelected ? "800" : "600"}
-                  fontFamily="Manrope, sans-serif"
+                  fontFamily="Inter, sans-serif"
                   className="pointer-events-none"
                 >
                   {node.label}
@@ -149,7 +157,7 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
                   x={node.x}
                   y={node.y + node.r + 26}
                   textAnchor="middle"
-                  fill="#789184"
+                  fill="#64748B"
                   fontSize="9.5"
                   fontWeight="600"
                   fontFamily="JetBrains Mono, monospace"
@@ -164,15 +172,15 @@ export default function MaharashtraMapSVG({ selectedDistrict, onSelectDistrict }
 
         {/* Hover Tooltip */}
         {hoveredDistrict && MAHARASHTRA_DISTRICTS[hoveredDistrict] && (
-          <div className="absolute top-3 left-3 z-20 p-3 rounded-lg bg-[#FFFFFF] border border-[#E5E2DA] shadow-card text-xs pointer-events-none animate-in fade-in duration-150">
-            <div className="font-bold text-[#1D2421] flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#164B36]" />
-              {MAHARASHTRA_DISTRICTS[hoveredDistrict].name}
+          <div className="absolute top-3 left-3 z-20 p-3.5 rounded-xl bg-[#17232C] border border-white/[0.12] shadow-surface-elevated text-xs pointer-events-none animate-in fade-in duration-150">
+            <div className="font-bold text-[#F5F7FA] flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#22D3EE]" />
+              {MAHARASHTRA_DISTRICTS[hoveredDistrict].name} Hub
             </div>
-            <div className="text-[11px] text-[#4A5550] mt-1">
-              Demand Index: <strong className="text-[#164B36]">{MAHARASHTRA_DISTRICTS[hoveredDistrict].demandIndex}%</strong> · {MAHARASHTRA_DISTRICTS[hoveredDistrict].status}
+            <div className="text-[11px] text-[#94A3B8] mt-1 font-mono">
+              Demand: <strong className="text-[#4ADE80]">{MAHARASHTRA_DISTRICTS[hoveredDistrict].demandIndex}%</strong> · {MAHARASHTRA_DISTRICTS[hoveredDistrict].status}
             </div>
-            <div className="text-[10px] text-[#789184] mt-0.5">
+            <div className="text-[10px] text-[#64748B] mt-0.5 font-mono">
               Available: {MAHARASHTRA_DISTRICTS[hoveredDistrict].availableCandidates.toLocaleString()} | Gap: {MAHARASHTRA_DISTRICTS[hoveredDistrict].skillGap}%
             </div>
           </div>

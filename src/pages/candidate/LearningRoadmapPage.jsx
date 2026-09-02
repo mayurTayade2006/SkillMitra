@@ -8,9 +8,11 @@ import {
   Clock, 
   Lock, 
   Play, 
-  ChevronRight,
-  ArrowRight,
-  Sparkles
+  ChevronRight, 
+  ArrowRight, 
+  Sparkles, 
+  Award, 
+  Layers 
 } from 'lucide-react';
 
 export default function LearningRoadmapPage() {
@@ -21,7 +23,7 @@ export default function LearningRoadmapPage() {
     setCourses((prev) =>
       prev.map((c) =>
         c.id === course.id
-          ? { ...c, status: c.status === 'locked' ? 'in-progress' : c.status, progress: c.status === 'locked' ? 15 : c.progress }
+          ? { ...c, status: c.status === 'locked' ? 'in-progress' : c.status, progress: c.status === 'locked' ? 20 : c.progress }
           : c
       )
     );
@@ -41,49 +43,57 @@ export default function LearningRoadmapPage() {
 
   return (
     <DashboardLayout role="candidate">
-      <div className="space-y-7">
+      <div className="space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-[#E5E2DA]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1D2421] tracking-tight">
-              Personalized learning roadmap
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A78BFA]/10 border border-[#A78BFA]/25 text-[#A78BFA] text-xs font-semibold mb-2 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA] animate-pulse" />
+              <span>NCVET-ACCREDITED CURRICULUM</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+              Adaptive Learning Roadmap
             </h1>
-            <p className="text-xs sm:text-sm text-[#4A5550] mt-1">
+            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1 font-mono">
               Sequential skill building journey targeted at closing identified deficits for Data Analyst.
             </p>
           </div>
 
-          <div className="p-3 rounded-lg bg-[#FAF9F5] border border-[#E5E2DA] text-right shrink-0">
-            <div className="text-[10px] uppercase font-bold text-[#789184]">Journey Completion</div>
-            <div className="text-sm font-extrabold text-[#164B36] mt-0.5">
+          <div className="p-3.5 rounded-xl bg-[#0D141B] border border-white/[0.06] text-right shrink-0">
+            <div className="text-[10px] uppercase font-bold text-[#64748B] font-mono">Journey Progress</div>
+            <div className="text-sm font-extrabold text-[#4ADE80] font-mono mt-0.5">
               {completedCount} of {courses.length} Stages ({progressPercent}%)
             </div>
           </div>
         </div>
 
         {/* Visual Journey Stepper Line: SQL -> Statistics -> Power BI -> Python -> Portfolio -> JOB READY */}
-        <div className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#E5E2DA] shadow-card space-y-3">
-          <div className="text-xs font-bold text-[#1D2421]">
-            Career Milestone Journey
+        <div className="surface-card rounded-2xl p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-bold text-[#F5F7FA] font-mono flex items-center gap-2">
+              <Layers className="w-4 h-4 text-[#22D3EE]" />
+              <span>Career Milestone Trajectory</span>
+            </div>
+            <span className="text-[10px] text-[#64748B] font-mono">Target: Q4 Hiring Cycle</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 pt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-6 gap-3 pt-2">
             {journeySteps.map((step, idx) => (
               <div 
                 key={idx}
-                className={`p-3 rounded-lg border text-center transition-colors ${
+                className={`p-3.5 rounded-xl border text-center transition-all ${
                   step.status === 'completed'
-                    ? 'bg-[#EBF2EE] border-[#D1E0D7] text-[#164B36]'
+                    ? 'bg-[#4ADE80]/10 border-[#4ADE80]/30 text-[#4ADE80]'
                     : step.status === 'current'
-                    ? 'bg-[#FDF4EC] border-[#E28A3B] text-[#E28A3B] ring-2 ring-[#E28A3B]/30'
+                    ? 'bg-[#F59E0B]/15 border-[#F59E0B]/40 text-[#F59E0B]'
                     : step.status === 'goal'
-                    ? 'bg-[#164B36] border-[#164B36] text-white font-bold'
-                    : 'bg-[#FAF9F5] border-[#E5E2DA] text-[#789184]'
+                    ? 'bg-gradient-to-r from-[#22D3EE] to-[#A78BFA] text-[#070B10] font-black border-transparent shadow-glow-teal'
+                    : 'bg-[#0D141B] border-white/[0.04] text-[#64748B]'
                 }`}
               >
-                <div className="text-[10px] font-mono font-bold uppercase mb-1">
-                  {step.status === 'completed' ? '✓ Stage 0' + (idx + 1) : step.status === 'current' ? '← CURRENT' : 'Stage 0' + (idx + 1)}
+                <div className="text-[9px] font-mono font-bold uppercase mb-1">
+                  {step.status === 'completed' ? '✓ Stage 0' + (idx + 1) : step.status === 'current' ? '← IN PROGRESS' : 'Stage 0' + (idx + 1)}
                 </div>
                 <div className="font-extrabold text-xs">
                   {step.label}
@@ -103,54 +113,54 @@ export default function LearningRoadmapPage() {
               <div
                 key={course.id}
                 onClick={() => setSelectedCourse(course)}
-                className={`p-5 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-subtle ${
+                className={`surface-card rounded-xl p-5 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 group ${
                   isInProgress
-                    ? 'bg-[#FFFFFF] border-[#164B36] ring-1 ring-[#164B36]'
+                    ? 'border-l-4 border-l-[#F59E0B]'
                     : isCompleted
-                    ? 'bg-[#FFFFFF] border-[#E5E2DA]'
-                    : 'bg-[#FAF9F5] border-[#E5E2DA] opacity-80 hover:opacity-100'
+                    ? 'border-l-4 border-l-[#4ADE80]'
+                    : 'border-l-4 border-l-slate-700 opacity-80 hover:opacity-100'
                 }`}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-9 h-9 rounded-md flex items-center justify-center shrink-0 font-mono text-xs font-bold ${
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 font-mono text-xs font-black ${
                     isCompleted
-                      ? 'bg-[#EBF2EE] text-[#164B36]'
+                      ? 'bg-[#4ADE80]/10 text-[#4ADE80] border border-[#4ADE80]/30'
                       : isInProgress
-                      ? 'bg-[#164B36] text-white'
-                      : 'bg-[#F3F0E8] text-[#789184]'
+                      ? 'bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30'
+                      : 'bg-white/[0.04] text-[#64748B] border border-white/[0.06]'
                   }`}>
                     0{idx + 1}
                   </div>
 
-                  <div>
+                  <div className="space-y-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-bold text-[#789184] uppercase">
+                      <span className="text-[10px] font-bold text-[#64748B] uppercase font-mono">
                         {course.category}
                       </span>
-                      <span>·</span>
+                      <span className="text-white/20">·</span>
                       {isCompleted ? (
-                        <span className="px-2 py-0.5 rounded bg-[#EBF2EE] text-[#164B36] border border-[#D1E0D7] text-[11px] font-bold">
+                        <span className="px-2 py-0.2 rounded bg-[#4ADE80]/10 text-[#4ADE80] border border-[#4ADE80]/30 text-[10px] font-bold font-mono">
                           ✓ Completed
                         </span>
                       ) : isInProgress ? (
-                        <span className="px-2 py-0.5 rounded bg-[#FDF4EC] text-[#E28A3B] border border-[#F8DCBE] text-[11px] font-bold">
+                        <span className="px-2 py-0.2 rounded bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30 text-[10px] font-bold font-mono animate-pulse">
                           In Progress ({course.progress}%)
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded bg-[#FAF9F5] text-[#789184] border border-[#E5E2DA] text-[11px] font-bold">
+                        <span className="px-2 py-0.2 rounded bg-white/[0.04] text-[#64748B] border border-white/[0.06] text-[10px] font-bold font-mono">
                           Locked
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-[#1D2421]">
+                    <h3 className="text-base font-bold text-[#F5F7FA] group-hover:text-[#22D3EE] transition-colors">
                       {course.title}
                     </h3>
-                    <p className="text-xs text-[#789184] mt-0.5">{course.provider}</p>
+                    <p className="text-xs text-[#94A3B8] font-mono">{course.provider}</p>
 
-                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                    <div className="flex flex-wrap gap-1.5 pt-1.5">
                       {course.skillsGained.map((skill, sIdx) => (
-                        <span key={sIdx} className="px-2.5 py-0.5 rounded bg-[#FAF9F5] border border-[#E5E2DA] text-[11px] text-[#4A5550]">
+                        <span key={sIdx} className="px-2.5 py-0.5 rounded-md bg-[#0D141B] border border-white/[0.06] text-[10px] text-[#94A3B8] font-mono">
                           {skill}
                         </span>
                       ))}
@@ -158,17 +168,17 @@ export default function LearningRoadmapPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#ECE9E1]">
-                  <div className="text-left sm:text-right text-xs text-[#789184]">
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-[#789184]" /> {course.duration}
+                <div className="flex items-center justify-between sm:justify-end gap-3.5 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-white/[0.06]">
+                  <div className="text-left sm:text-right text-xs text-[#94A3B8] font-mono">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#22D3EE]" /> {course.duration}
                     </div>
-                    <div className="text-[10px] text-[#4A5550] mt-0.5">Level: {course.level}</div>
+                    <div className="text-[10px] text-[#64748B] mt-0.5">Level: {course.level}</div>
                   </div>
 
-                  <button className="px-3.5 py-1.5 rounded-md border border-[#E5E2DA] bg-[#FAF9F5] hover:bg-[#F3F0E8] text-xs font-bold text-[#1D2421] flex items-center gap-1 shadow-subtle">
-                    <span>Module Info</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#789184]" />
+                  <button className="px-3.5 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-[#22D3EE]/20 text-xs font-bold text-[#F5F7FA] hover:text-[#22D3EE] flex items-center gap-1 transition-all">
+                    <span>Inspect</span>
+                    <ChevronRight className="w-3 h-3 text-[#64748B]" />
                   </button>
                 </div>
               </div>

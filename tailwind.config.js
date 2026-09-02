@@ -4,62 +4,88 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        forest: {
-          DEFAULT: '#164B36',
-          hover: '#113A2A',
-          dark: '#0D2D20',
-          tint: '#EBF2EE',
-          faint: '#F2F7F4',
+        dark: {
+          bg: '#070B10',
+          sub: '#0D141B',
+          surface: '#121B23',
+          elevated: '#17232C',
+          card: '#141E26',
+          border: 'rgba(255, 255, 255, 0.08)',
+          'border-subtle': 'rgba(255, 255, 255, 0.05)',
         },
-        warm: {
-          DEFAULT: '#FAF9F5',
-          surface: '#FFFFFF',
-          sand: '#F3F0E8',
-          border: '#E5E2DA',
-          subtle: '#EDEAE2',
+        // Purpose-Driven Functional Accents:
+        emerald: {
+          DEFAULT: '#4ADE80',
+          400: '#4ADE80', // Skills, Success, Readiness
+          500: '#22C55E',
+          600: '#16A34A',
+          glow: 'rgba(74, 222, 128, 0.25)',
         },
-        charcoal: {
-          DEFAULT: '#1D2421',
-          muted: '#4A5550',
-          light: '#65726C',
+        teal: {
+          DEFAULT: '#22D3EE',
+          400: '#22D3EE', // AI, Intelligence, Data
+          500: '#06B6D4',
+          glow: 'rgba(34, 211, 238, 0.25)',
         },
-        sage: {
-          DEFAULT: '#789184',
-          light: '#A4B8AD',
-          tint: '#EDF3F0',
+        violet: {
+          DEFAULT: '#A78BFA',
+          400: '#A78BFA', // Learning, Career Pathways
+          500: '#8B5CF6',
+          glow: 'rgba(167, 139, 250, 0.25)',
         },
-        saffron: {
-          DEFAULT: '#E28A3B',
-          hover: '#CD782B',
-          tint: '#FDF4EC',
-          border: '#F8DCBE',
+        amber: {
+          DEFAULT: '#F59E0B',
+          400: '#FBBF24', // Alerts, Opportunities, Insights
+          500: '#F59E0B',
+          glow: 'rgba(245, 158, 11, 0.25)',
         },
-        terracotta: {
-          DEFAULT: '#C9634C',
-          tint: '#FAF0ED',
-          border: '#F5DCD5',
+        rose: {
+          DEFAULT: '#FB7185',
+          400: '#FB7185', // Critical gaps, Danger
+          500: '#F43F5E',
+          glow: 'rgba(251, 113, 133, 0.25)',
+        },
+        slate: {
+          850: '#0F1720',
+          900: '#0A1017',
+          950: '#070B10',
         }
       },
       fontFamily: {
-        sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Manrope', 'system-ui', 'sans-serif'],
         serif: ['Newsreader', 'Playfair Display', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
       },
       boxShadow: {
-        'subtle': '0 1px 2px 0 rgba(29, 36, 33, 0.04)',
-        'card': '0 2px 6px -1px rgba(29, 36, 33, 0.04), 0 1px 3px -1px rgba(29, 36, 33, 0.02)',
-        'elevated': '0 12px 28px -6px rgba(29, 36, 33, 0.07), 0 4px 10px -2px rgba(29, 36, 33, 0.03)',
+        'surface': '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
+        'surface-elevated': '0 12px 32px -4px rgba(0, 0, 0, 0.65)',
+        'glow-emerald': '0 0 20px rgba(74, 222, 128, 0.25)',
+        'glow-teal': '0 0 20px rgba(34, 211, 238, 0.25)',
+        'glow-violet': '0 0 20px rgba(167, 139, 250, 0.25)',
+        'glow-amber': '0 0 20px rgba(245, 158, 11, 0.25)',
       },
       borderRadius: {
-        'xs': '4px',
-        'sm': '6px',
-        'md': '8px',
-        'lg': '12px',
+        'sm': '8px',
+        'md': '12px',
+        'lg': '14px',
         'xl': '16px',
         '2xl': '20px',
+        '3xl': '24px',
+      },
+      animation: {
+        'spin-slow': 'spin 20s linear infinite',
+        'spin-slow-reverse': 'spin-reverse 25s linear infinite',
+        'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        'spin-reverse': {
+          '0%': { transform: 'rotate(360deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        }
       }
     },
   },
