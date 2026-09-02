@@ -49,7 +49,7 @@ export default function GovernmentDashboard() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-white/[0.06]">
             <div className="space-y-1.5">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#F59E0B] px-2.5 py-0.5 rounded-full bg-[#F59E0B]/10 border border-[#F59E0B]/30 font-mono">
-                State Skilling Mission · SIH26135
+                State Skilling Mission · Maharashtra GovTech
               </span>
               <h1 className="text-2xl sm:text-3xl font-black text-[#F5F7FA] tracking-tight">
                 Statewide Skill & Employment Intelligence

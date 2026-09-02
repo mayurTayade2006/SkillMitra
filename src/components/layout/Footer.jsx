@@ -16,9 +16,6 @@ export default function Footer() {
             <div>
               <div className="text-[#F5F7F4] font-bold text-sm tracking-tight flex items-center gap-2">
                 Government of Maharashtra State Skilling Mission
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-[#E5A34A] border border-amber-500/30 font-mono">
-                  SIH26135
-                </span>
               </div>
               <div className="text-[11px] text-[#94A3B8] mt-0.5">
                 Skill Development, Employment & Entrepreneurship Department · Mantralaya, Mumbai
@@ -96,7 +93,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#64748B]">
           <div>
-            Government of Maharashtra · Smart Education & Skilling Mission · SIH26135
+            Government of Maharashtra · Smart Education & Skilling Mission
           </div>
 
           <div className="flex items-center gap-4">

@@ -119,7 +119,7 @@ export default function LandingPage() {
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121B23] border border-white/[0.08] text-[#22D3EE] text-xs font-semibold shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse" />
                 <span className="font-mono text-[11px] uppercase tracking-wider text-[#94A3B8]">
-                  GOVERNMENT OF MAHARASHTRA · <strong className="text-[#22D3EE]">SIH26135</strong>
+                  GOVERNMENT OF MAHARASHTRA · <strong className="text-[#22D3EE]">SKILL INTELLIGENCE PLATFORM</strong>
                 </span>
               </div>
 

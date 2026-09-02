@@ -108,9 +108,6 @@ export default function DashboardLayout({ children, role = "candidate" }) {
                 <span className="font-sans font-extrabold text-sm tracking-tight text-white group-hover:text-[#38BDF8] transition-colors">
                   SKILLMITRA
                 </span>
-                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/15 text-[#38BDF8] border border-cyan-500/40 font-bold">
-                  SIH26135
-                </span>
               </div>
               <span className="block text-[10px] text-[#93C5FD] font-mono mt-0.5">GovTech Maharashtra</span>
             </div>

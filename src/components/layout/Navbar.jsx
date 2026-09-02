@@ -61,9 +61,6 @@ export default function Navbar({ onOpenNotifications, unreadCount = 2 }) {
                 <span className="font-sans text-sm font-extrabold tracking-tight text-white group-hover:text-[#38BDF8] transition-colors">
                   SKILLMITRA
                 </span>
-                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-cyan-500/15 text-[#38BDF8] border border-cyan-500/40 uppercase tracking-wider font-mono">
-                  SIH26135
-                </span>
               </div>
               <span className="text-[10px] text-[#93C5FD] font-mono leading-none">
                 GovTech Maharashtra

@@ -1,6 +1,6 @@
 # 🏛️ SkillMitra (कौशलमित्र)
 ### AI-Powered Skill & Employment Intelligence Platform
-**Problem Statement:** SIH26135 — Tracking Employment Outcomes, Skill Gaps, and the Impact of Skilling Initiatives  
+**Mission:** Tracking Employment Outcomes, Skill Gaps, and the Impact of Skilling Initiatives  
 **Sponsor:** Government of Maharashtra · Smart Education & Employment Department  
 **Tagline:** *"Skills are everywhere. Opportunity shouldn't be."*
 
@@ -90,4 +90,4 @@ npm run preview
 ---
 
 ## 📄 License
-Government of Maharashtra · Smart India Hackathon (SIH26135).
+Government of Maharashtra · Skill Development & Employment Department.
