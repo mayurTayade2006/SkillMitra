@@ -4,190 +4,195 @@ import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 
 // -------------------------------------------------------------
-// 1. FULL-PAGE SWEEPING KINETIC CHAIN RIBBON (Inspired by Reference Image 3)
+// CHROMATIC DISPERSION BEVELED CRYSTAL PRISM SYSTEM
+// Inspired by the reference: Beveled Optical Glass with
+// Spectral Rainbow Dispersion, Facet Edges, and High Gloss Sheen
 // -------------------------------------------------------------
 
-function KineticChainSegment({ index, total, impulseRef, mouseRef }) {
-  const meshRef = useRef();
+// Helper to generate dynamic spectral rainbow gradient texture
+function createSpectralTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  
+  // Diagonal spectral dispersion gradient matching reference image
+  const grad = ctx.createLinearGradient(0, 0, 512, 512);
+  grad.addColorStop(0.0, '#FF007F'); // Neon Magenta
+  grad.addColorStop(0.18, '#FF5500'); // Bright Orange
+  grad.addColorStop(0.35, '#FFE600'); // Vivid Yellow
+  grad.addColorStop(0.52, '#00FF66'); // Neon Green
+  grad.addColorStop(0.68, '#00E5FF'); // Electric Cyan
+  grad.addColorStop(0.84, '#3B82F6'); // Indigo Blue
+  grad.addColorStop(1.0, '#9D00FF'); // Deep Violet
+  
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 512, 512);
 
-  // Color gradient across the chain: Electric Cyan -> Deep Blue -> Indigo -> Violet -> Fuchsia
-  const color = useMemo(() => {
-    const t = index / total;
-    const c1 = new THREE.Color('#22D3EE'); // Cyan
-    const c2 = new THREE.Color('#3B82F6'); // Electric Blue
-    const c3 = new THREE.Color('#6366F1'); // Indigo
-    const c4 = new THREE.Color('#A78BFA'); // Violet
-    const c5 = new THREE.Color('#E879F9'); // Fuchsia
+  // Soft light streaks
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+  ctx.fillRect(120, 0, 60, 512);
+  ctx.fillRect(320, 0, 40, 512);
+  
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
 
-    const col = new THREE.Color();
-    if (t < 0.25) {
-      col.lerpColors(c1, c2, t / 0.25);
-    } else if (t < 0.5) {
-      col.lerpColors(c2, c3, (t - 0.25) / 0.25);
-    } else if (t < 0.75) {
-      col.lerpColors(c3, c4, (t - 0.5) / 0.25);
-    } else {
-      col.lerpColors(c4, c5, (t - 0.75) / 0.25);
+// -------------------------------------------------------------
+// 1. BEVELED PRISMATIC CRYSTAL BLOCK COMPONENT
+// -------------------------------------------------------------
+
+function BeveledPrismaticCrystalBlock({ 
+  size = [3.2, 1.8, 0.9], 
+  position = [0, 0, 0], 
+  initialRotation = [0.55, -0.45, 0.35],
+  rotSpeed = [0.08, 0.12, 0.05],
+  driftSpeed = 0.6,
+  scale = 1.0,
+  isHero = false
+}) {
+  const groupRef = useRef();
+  const innerRefractionRef = useRef();
+  
+  const spectralTexture = useMemo(() => createSpectralTexture(), []);
+  const [w, h, d] = size;
+  const bevelDepth = 0.22;
+
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+    const time = state.clock.getElapsedTime();
+
+    // Smooth 3D continuous multi-axis tumbling and drift
+    groupRef.current.rotation.x += delta * rotSpeed[0];
+    groupRef.current.rotation.y += delta * rotSpeed[1];
+    groupRef.current.rotation.z += delta * rotSpeed[2];
+
+    // Gentle vertical and horizontal floating drift
+    groupRef.current.position.y = position[1] + Math.sin(time * driftSpeed + position[0]) * 0.18;
+    groupRef.current.position.x = position[0] + Math.cos(time * driftSpeed * 0.7 + position[1]) * 0.12;
+
+    // Subtle internal spectral refraction shift
+    if (innerRefractionRef.current) {
+      innerRefractionRef.current.rotation.z = time * 0.15;
     }
-    return col;
-  }, [index, total]);
-
-  useFrame((state, delta) => {
-    if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
-    const impulse = impulseRef?.current || 0;
-    const mouse = mouseRef?.current || { x: 0, y: 0 };
-
-    const tNorm = (index / total) * 2 - 1; // -1 to 1 across screen width
-
-    // Broad sweeping S-curve across the entire screen
-    const baseX = tNorm * 8.5;
-    const baseY = Math.sin(tNorm * Math.PI * 1.4 + time * 0.7) * 2.2 + Math.cos(time * 0.4 + tNorm * 2) * 0.6;
-    const baseZ = Math.cos(tNorm * Math.PI * 1.2 + time * 0.6) * 2.0 - 0.6;
-
-    // Interactive mouse displacement & click impulse wave traveling down the chain
-    const clickWave = Math.sin(time * 6.0 - index * 0.35) * impulse * 0.8;
-    const mousePush = Math.sin(tNorm * 3 + mouse.x * 2) * mouse.y * 0.6;
-
-    meshRef.current.position.x = baseX + mouse.x * 0.8;
-    meshRef.current.position.y = baseY + clickWave + mousePush;
-    meshRef.current.position.z = baseZ;
-
-    // Progressive helical twisting rotatory animation like the unzer chain
-    const twistAngle = time * 0.9 + index * 0.18 + impulse * 2.0;
-    meshRef.current.rotation.x = Math.sin(twistAngle) * 1.4;
-    meshRef.current.rotation.y = twistAngle * 0.6 + tNorm * 0.8;
-    meshRef.current.rotation.z = Math.cos(twistAngle * 0.8) * 0.9;
   });
 
   return (
-    <mesh ref={meshRef}>
-      {/* Sleek rounded blade / slab shape matching reference */}
-      <boxGeometry args={[1.5, 0.18, 0.65]} />
-      <meshPhysicalMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.48}
-        roughness={0.08}
-        metalness={0.18}
-        clearcoat={1.0}
-        clearcoatRoughness={0.05}
-        transmission={0.52}
-        ior={1.52}
-        thickness={1.2}
-        transparent
-        opacity={0.94}
-      />
-    </mesh>
-  );
-}
-
-function FullPageKineticChain({ count = 42, impulseRef, mouseRef }) {
-  return (
-    <group>
-      {Array.from({ length: count }).map((_, idx) => (
-        <KineticChainSegment
-          key={idx}
-          index={idx}
-          total={count}
-          impulseRef={impulseRef}
-          mouseRef={mouseRef}
-        />
-      ))}
-    </group>
-  );
-}
-
-// -------------------------------------------------------------
-// 2. FLOATING REFRACTIVE CRYSTAL PRISMS (Drifting around the chain)
-// -------------------------------------------------------------
-
-function FloatingCrystal({ initialPos, size, rotSpeed, colorTint, phase, impulseRef }) {
-  const meshRef = useRef();
-
-  useFrame((state, delta) => {
-    if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
-    const impulse = impulseRef?.current || 0;
-    const speed = 1 + impulse * 3.0;
-
-    meshRef.current.rotation.x += delta * rotSpeed[0] * speed;
-    meshRef.current.rotation.y += delta * rotSpeed[1] * speed;
-    meshRef.current.rotation.z += delta * rotSpeed[2] * speed;
-
-    meshRef.current.position.y = initialPos[1] + Math.sin(time * 0.8 + phase) * 0.3;
-    meshRef.current.position.x = initialPos[0] + Math.cos(time * 0.5 + phase) * 0.2;
-  });
-
-  return (
-    <mesh ref={meshRef} position={initialPos}>
-      <boxGeometry args={size} />
-      <meshPhysicalMaterial
-        color={colorTint}
-        emissive={colorTint === '#22D3EE' ? '#0e4a5c' : '#431980'}
-        emissiveIntensity={0.55}
-        roughness={0.04}
-        metalness={0.08}
-        transmission={0.94}
-        ior={1.55}
-        thickness={1.8}
-        clearcoat={1.0}
-        clearcoatRoughness={0.04}
-        iridescence={0.95}
-        iridescenceIOR={1.35}
-        transparent
-        opacity={0.94}
-      />
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(...size)]} />
-        <lineBasicMaterial
-          color={colorTint === '#22D3EE' ? '#a5f3fc' : '#ddd6fe'}
+    <group ref={groupRef} position={position} rotation={initialRotation} scale={scale}>
+      
+      {/* 1. Main Optical Glass Core (Deep Midnight Glass Body) */}
+      <mesh>
+        <boxGeometry args={[w - bevelDepth * 0.8, h - bevelDepth * 0.8, d - bevelDepth * 0.6]} />
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transmission={0.93}
+          ior={1.62}
+          roughness={0.03}
+          metalness={0.06}
+          clearcoat={1.0}
+          clearcoatRoughness={0.02}
+          thickness={2.2}
+          attenuationColor="#130e2b"
+          attenuationDistance={1.4}
+          iridescence={1.0}
+          iridescenceIOR={1.45}
+          iridescenceThicknessRange={[100, 800]}
           transparent
-          opacity={0.8}
+          opacity={0.95}
+        />
+      </mesh>
+
+      {/* 2. Outer Beveled / Chamfered Glass Facet Frame */}
+      <mesh>
+        <boxGeometry args={[w, h, d]} />
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transmission={0.88}
+          ior={1.55}
+          roughness={0.04}
+          metalness={0.08}
+          clearcoat={1.0}
+          clearcoatRoughness={0.03}
+          thickness={1.6}
+          transparent
+          opacity={0.5}
+        />
+      </mesh>
+
+      {/* 3. Internal Spectral Rainbow Refraction Core (Matches Image Interior Glow) */}
+      <mesh ref={innerRefractionRef} position={[0, 0, 0]}>
+        <planeGeometry args={[w * 0.88, h * 0.88]} />
+        <meshBasicMaterial
+          map={spectralTexture}
+          transparent
+          opacity={0.55}
+          blending={THREE.AdditiveBlending}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* 4. Bevel Facet Edges with Radiant Rainbow Dispersion Highlights */}
+      <lineSegments>
+        <edgesGeometry args={[new THREE.BoxGeometry(w, h, d)]} />
+        <lineBasicMaterial
+          color="#00E5FF"
+          transparent
+          opacity={0.85}
+          linewidth={2}
         />
       </lineSegments>
-    </mesh>
-  );
-}
 
-function FloatingCrystals({ impulseRef }) {
-  const crystals = useMemo(() => [
-    { pos: [3.5, 2.0, 0.5], size: [0.9, 1.8, 0.45], rot: [0.15, 0.22, 0.1], color: '#22D3EE', phase: 0 },
-    { pos: [-3.8, -1.8, -0.5], size: [1.0, 2.0, 0.5], rot: [-0.18, 0.2, 0.14], color: '#A78BFA', phase: 1.5 },
-    { pos: [4.2, -1.5, -1.0], size: [0.8, 1.5, 0.4], rot: [0.2, -0.15, 0.18], color: '#E879F9', phase: 3.0 },
-    { pos: [-4.0, 2.2, -1.5], size: [0.75, 1.4, 0.35], rot: [0.12, 0.25, -0.16], color: '#38BDF8', phase: 4.2 },
-    { pos: [0.5, 3.2, -2.0], size: [0.85, 1.6, 0.4], rot: [-0.22, 0.18, 0.12], color: '#A78BFA', phase: 2.1 },
-    { pos: [-0.8, -3.0, -2.2], size: [0.9, 1.7, 0.42], rot: [0.16, -0.2, 0.15], color: '#22D3EE', phase: 5.0 },
-  ], []);
-
-  return (
-    <group>
-      {crystals.map((c, i) => (
-        <FloatingCrystal
-          key={i}
-          initialPos={c.pos}
-          size={c.size}
-          rotSpeed={c.rot}
-          colorTint={c.color}
-          phase={c.phase}
-          impulseRef={impulseRef}
+      {/* Inner chamfer highlight lines */}
+      <lineSegments>
+        <edgesGeometry args={[new THREE.BoxGeometry(w - bevelDepth, h - bevelDepth, d - bevelDepth)]} />
+        <lineBasicMaterial
+          color="#FF007F"
+          transparent
+          opacity={0.75}
+          linewidth={1.5}
         />
-      ))}
+      </lineSegments>
+
+      {/* 5. Corner Chromatic Caustic Nodes */}
+      {isHero && (
+        <>
+          <mesh position={[w / 2, h / 2, d / 2]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#FF007F" transparent opacity={0.9} />
+          </mesh>
+          <mesh position={[-w / 2, -h / 2, -d / 2]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#00E5FF" transparent opacity={0.9} />
+          </mesh>
+          <mesh position={[w / 2, -h / 2, d / 2]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#FFE600" transparent opacity={0.9} />
+          </mesh>
+          <mesh position={[-w / 2, h / 2, -d / 2]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#9D00FF" transparent opacity={0.9} />
+          </mesh>
+        </>
+      )}
+
     </group>
   );
 }
 
 // -------------------------------------------------------------
-// 3. PRISMATIC DEPTH PARTICLES
+// 2. AMBIENT CHROMATIC DUST & PARTICLES
 // -------------------------------------------------------------
 
-function AmbientPrismaticDust({ count = 75 }) {
+function AmbientChromaticDust({ count = 35 }) {
   const points = useMemo(() => {
     const coords = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      coords[i * 3] = (Math.random() - 0.5) * 20;
-      coords[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      coords[i * 3 + 2] = (Math.random() - 0.5) * 10 - 1;
+      coords[i * 3] = (Math.random() - 0.5) * 18;
+      coords[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      coords[i * 3 + 2] = (Math.random() - 0.5) * 8 - 1;
     }
     return coords;
   }, [count]);
@@ -196,8 +201,8 @@ function AmbientPrismaticDust({ count = 75 }) {
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.02;
-      pointsRef.current.rotation.x += delta * 0.01;
+      pointsRef.current.rotation.y += delta * 0.012;
+      pointsRef.current.rotation.x += delta * 0.006;
     }
   });
 
@@ -212,10 +217,10 @@ function AmbientPrismaticDust({ count = 75 }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.06}
-        color="#38BDF8"
+        size={0.045}
+        color="#00E5FF"
         transparent
-        opacity={0.6}
+        opacity={0.45}
         sizeAttenuation
       />
     </points>
@@ -223,95 +228,121 @@ function AmbientPrismaticDust({ count = 75 }) {
 }
 
 // -------------------------------------------------------------
-// 4. MAIN SCENE CONTROLLER (Whole Page Dynamic Helical Chain)
+// 3. MAIN SCENE CONTROLLER (Camera, Parallax & Multi-Crystals)
 // -------------------------------------------------------------
 
-function FullPageHelicalChainScene() {
+function PrismaticCrystalScene() {
   const location = useLocation();
   const sceneGroupRef = useRef();
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
-  const impulseRef = useRef(0);
 
-  // Route-aware camera / group transitions
+  // Route-aware subtle position offsets
   const targetPos = useMemo(() => {
     const path = location.pathname;
     if (path === '/') return { x: 0, y: 0, z: 0 };
-    return { x: 0.5, y: -0.1, z: -2.4 };
+    if (path.startsWith('/candidate')) return { x: 0.4, y: -0.1, z: -1.2 };
+    if (path.startsWith('/government')) return { x: -0.4, y: 0.1, z: -1.4 };
+    if (path.startsWith('/security')) return { x: 0.3, y: 0.0, z: -1.0 };
+    return { x: 0.2, y: 0.0, z: -1.0 };
   }, [location.pathname]);
 
-  // Global Click & Mouse Listeners across whole website
+  // Mouse Parallax Listener
   useEffect(() => {
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      mouseRef.current.targetX = x * 0.6;
-      mouseRef.current.targetY = y * 0.6;
-    };
-
-    const handleGlobalClick = () => {
-      // Global click impulse burst
-      impulseRef.current = 1.0;
+      mouseRef.current.targetX = x * 0.45;
+      mouseRef.current.targetY = y * 0.45;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('pointerdown', handleGlobalClick, { passive: true });
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('pointerdown', handleGlobalClick);
-    };
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   useFrame((state, delta) => {
-    // Smooth impulse decay
-    impulseRef.current = THREE.MathUtils.damp(impulseRef.current, 0, 3.5, delta);
-
     if (sceneGroupRef.current) {
-      // Smooth mouse parallax
-      mouseRef.current.x = THREE.MathUtils.lerp(mouseRef.current.x, mouseRef.current.targetX, delta * 3.5);
-      mouseRef.current.y = THREE.MathUtils.lerp(mouseRef.current.y, mouseRef.current.targetY, delta * 3.5);
+      // Smooth mouse interpolation
+      mouseRef.current.x = THREE.MathUtils.lerp(mouseRef.current.x, mouseRef.current.targetX, delta * 2.5);
+      mouseRef.current.y = THREE.MathUtils.lerp(mouseRef.current.y, mouseRef.current.targetY, delta * 2.5);
 
-      // Smooth route position transition
-      sceneGroupRef.current.position.x = THREE.MathUtils.lerp(sceneGroupRef.current.position.x, targetPos.x + mouseRef.current.x * 0.5, delta * 2.5);
-      sceneGroupRef.current.position.y = THREE.MathUtils.lerp(sceneGroupRef.current.position.y, targetPos.y + mouseRef.current.y * 0.5, delta * 2.5);
-      sceneGroupRef.current.position.z = THREE.MathUtils.lerp(sceneGroupRef.current.position.z, targetPos.z, delta * 2.5);
+      // Smooth camera position and tilt
+      sceneGroupRef.current.position.x = THREE.MathUtils.lerp(sceneGroupRef.current.position.x, targetPos.x + mouseRef.current.x * 0.5, delta * 2.0);
+      sceneGroupRef.current.position.y = THREE.MathUtils.lerp(sceneGroupRef.current.position.y, targetPos.y + mouseRef.current.y * 0.5, delta * 2.0);
+      sceneGroupRef.current.position.z = THREE.MathUtils.lerp(sceneGroupRef.current.position.z, targetPos.z, delta * 2.0);
 
-      // Dynamic tilt
-      sceneGroupRef.current.rotation.y = mouseRef.current.x * 0.25;
-      sceneGroupRef.current.rotation.x = -mouseRef.current.y * 0.25;
+      sceneGroupRef.current.rotation.y = mouseRef.current.x * 0.2;
+      sceneGroupRef.current.rotation.x = -mouseRef.current.y * 0.2;
     }
   });
 
   return (
     <>
-      {/* Radiant High-Brightness Studio Lighting */}
-      <ambientLight intensity={1.15} />
-      <directionalLight position={[8, 10, 6]} intensity={2.4} color="#ffffff" />
-      <directionalLight position={[-8, -6, 4]} intensity={1.6} color="#22D3EE" />
+      {/* Studio Studio Lighting with Spectral Accent Rim Lights */}
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[8, 10, 6]} intensity={2.2} color="#ffffff" />
+      <directionalLight position={[-8, -6, 4]} intensity={1.4} color="#ffffff" />
 
-      <pointLight position={[5, 4, 4]} intensity={2.2} color="#A78BFA" distance={18} />
-      <pointLight position={[-5, 3, 2]} intensity={1.9} color="#22D3EE" distance={16} />
-      <pointLight position={[0, -5, 4]} intensity={1.6} color="#E879F9" distance={14} />
-      <pointLight position={[3, -4, -2]} intensity={1.4} color="#38BDF8" distance={12} />
+      {/* Chromatic Spectral Point Lights matching the reference refraction */}
+      <pointLight position={[5, 4, 3]} intensity={2.0} color="#FF007F" distance={16} />
+      <pointLight position={[-5, 3, 2]} intensity={2.0} color="#00E5FF" distance={15} />
+      <pointLight position={[0, -5, 3]} intensity={1.6} color="#FFE600" distance={14} />
+      <pointLight position={[4, -4, -2]} intensity={1.8} color="#9D00FF" distance={12} />
 
       <group ref={sceneGroupRef}>
-        {/* Sweeping Full-Page Helical Kinetic Ribbon Chain (Image 3) */}
-        <FullPageKineticChain count={44} impulseRef={impulseRef} mouseRef={mouseRef} />
+        
+        {/* 1. HERO BEVELED PRISMATIC CRYSTAL (Upper Right / Background - Exactly like Reference Photo) */}
+        <BeveledPrismaticCrystalBlock
+          size={[3.4, 1.8, 0.95]}
+          position={[2.4, 0.5, 0.2]}
+          initialRotation={[0.55, -0.45, 0.35]}
+          rotSpeed={[0.035, 0.05, 0.025]}
+          driftSpeed={0.5}
+          scale={1.15}
+          isHero={true}
+        />
 
-        {/* Floating Prismatic Crystals (Image 1) */}
-        <FloatingCrystals impulseRef={impulseRef} />
+        {/* 2. Secondary Floating Prismatic Crystal (Left Mid-Depth) */}
+        <BeveledPrismaticCrystalBlock
+          size={[2.6, 1.4, 0.8]}
+          position={[-3.4, -1.5, -1.0]}
+          initialRotation={[-0.4, 0.6, -0.25]}
+          rotSpeed={[-0.04, 0.045, 0.03]}
+          driftSpeed={0.65}
+          scale={0.9}
+        />
+
+        {/* 3. Companion Crystal Prism (Top-Left Background) */}
+        <BeveledPrismaticCrystalBlock
+          size={[2.2, 1.2, 0.7]}
+          position={[-2.8, 2.4, -1.6]}
+          initialRotation={[0.3, 0.4, -0.5]}
+          rotSpeed={[0.03, -0.04, 0.035]}
+          driftSpeed={0.55}
+          scale={0.8}
+        />
+
+        {/* 4. Lower-Right Ambient Crystal Prism */}
+        <BeveledPrismaticCrystalBlock
+          size={[2.4, 1.3, 0.75]}
+          position={[3.2, -2.4, -1.5]}
+          initialRotation={[-0.5, -0.3, 0.4]}
+          rotSpeed={[0.04, 0.035, -0.03]}
+          driftSpeed={0.6}
+          scale={0.85}
+        />
+
       </group>
 
-      <AmbientPrismaticDust count={75} />
+      <AmbientChromaticDust count={35} />
     </>
   );
 }
 
 // -------------------------------------------------------------
-// 5. 2D CANVAS FALLBACK (High-End Sweeping Kinetic Chain)
+// 4. 2D CANVAS FALLBACK (Beveled Crystal Prism Renderer)
 // -------------------------------------------------------------
 
-function Canvas2DChainFallback() {
+function Canvas2DPrismaticFallback() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -330,34 +361,44 @@ function Canvas2DChainFallback() {
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      angle += 0.012;
+      angle += 0.008;
 
-      const total = 32;
-      const w = canvas.width;
-      const h = canvas.height;
+      const cx = canvas.width * 0.74;
+      const cy = canvas.height * 0.38;
 
-      for (let i = 0; i < total; i++) {
-        const t = i / total;
-        const x = t * w;
-        const y = h * 0.5 + Math.sin(t * Math.PI * 2 + angle) * (h * 0.25);
-        const rot = angle + i * 0.2;
+      ctx.save();
+      ctx.translate(cx, cy + Math.sin(angle) * 15);
+      ctx.rotate(0.35 + Math.sin(angle * 0.8) * 0.05);
 
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rot);
+      // Rainbow Bevel Gradient
+      const grad = ctx.createLinearGradient(-150, -80, 150, 80);
+      grad.addColorStop(0, '#FF007F');
+      grad.addColorStop(0.25, '#FFE600');
+      grad.addColorStop(0.5, '#00FF66');
+      grad.addColorStop(0.75, '#00E5FF');
+      grad.addColorStop(1, '#9D00FF');
 
-        const grad = ctx.createLinearGradient(-35, -8, 35, 8);
-        grad.addColorStop(0, 'rgba(34, 211, 238, 0.45)');
-        grad.addColorStop(0.5, 'rgba(99, 102, 241, 0.5)');
-        grad.addColorStop(1, 'rgba(167, 139, 250, 0.45)');
+      // Outer Bevel Box
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 3;
+      ctx.fillStyle = 'rgba(10, 16, 26, 0.85)';
+      ctx.fillRect(-140, -75, 280, 150);
+      ctx.strokeRect(-140, -75, 280, 150);
 
-        ctx.fillStyle = grad;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.lineWidth = 1;
-        ctx.fillRect(-45, -8, 90, 16);
-        ctx.strokeRect(-45, -8, 90, 16);
-        ctx.restore();
-      }
+      // Inner Chamfer Frame
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(-120, -60, 240, 120);
+
+      // Corner Chamfer Lines
+      ctx.beginPath();
+      ctx.moveTo(-140, -75); ctx.lineTo(-120, -60);
+      ctx.moveTo(140, -75); ctx.lineTo(120, -60);
+      ctx.moveTo(-140, 75); ctx.lineTo(-120, 60);
+      ctx.moveTo(140, 75); ctx.lineTo(120, 60);
+      ctx.stroke();
+
+      ctx.restore();
 
       animId = requestAnimationFrame(render);
     };
@@ -373,13 +414,13 @@ function Canvas2DChainFallback() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-80"
+      className="fixed inset-0 pointer-events-none z-0 opacity-60"
     />
   );
 }
 
 // -------------------------------------------------------------
-// 6. PERSISTENT BACKGROUND WRAPPER (Full on Homepage, 38% Glassmorphism on Portals)
+// 5. PERSISTENT BACKGROUND WRAPPER
 // -------------------------------------------------------------
 
 export default function PersistentBackground() {
@@ -400,16 +441,16 @@ export default function PersistentBackground() {
   return (
     <div
       className={`fixed inset-0 pointer-events-none select-none z-0 overflow-hidden transition-opacity duration-700 ${
-        isHomepage ? 'opacity-100' : 'opacity-[0.38]'
+        isHomepage ? 'opacity-100' : 'opacity-[0.45]'
       }`}
       style={{
-        background: 'radial-gradient(ellipse 90% 75% at 50% 40%, #15304d 0%, #0a1f33 50%, #070B10 100%)',
+        background: 'radial-gradient(ellipse 90% 75% at 65% 35%, #0f1c2d 0%, #08101a 50%, #070B10 100%)',
       }}
       aria-hidden="true"
     >
       {hasWebGL ? (
         <Canvas
-          camera={{ position: [0, 0, 8.5], fov: 48 }}
+          camera={{ position: [0, 0, 7.8], fov: 46 }}
           dpr={[1, 1.5]}
           gl={{
             antialias: true,
@@ -418,10 +459,10 @@ export default function PersistentBackground() {
           }}
           className="w-full h-full"
         >
-          <FullPageHelicalChainScene />
+          <PrismaticCrystalScene />
         </Canvas>
       ) : (
-        <Canvas2DChainFallback />
+        <Canvas2DPrismaticFallback />
       )}
     </div>
   );
