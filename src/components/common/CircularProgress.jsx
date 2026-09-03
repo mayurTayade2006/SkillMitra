@@ -14,11 +14,11 @@ export default function CircularProgress({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   const colorMap = {
-    emerald: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-[#A7F3D0]" },
-    teal: { stroke: "#18B8A2", gradient: ["#18B8A2", "#5EEAD4"], text: "text-[#5EEAD4]" },
-    saffron: { stroke: "#E5A34A", gradient: ["#E5A34A", "#FBBF24"], text: "text-[#FDE68A]" },
-    mint: { stroke: "#A7F3D0", gradient: ["#A7F3D0", "#6EE7B7"], text: "text-[#A7F3D0]" },
-    forest: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-[#A7F3D0]" },
+    emerald: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-emerald-700 dark:text-[#A7F3D0]" },
+    teal: { stroke: "#0284C7", gradient: ["#0284C7", "#38BDF8"], text: "text-sky-700 dark:text-[#5EEAD4]" },
+    saffron: { stroke: "#D97706", gradient: ["#D97706", "#F59E0B"], text: "text-amber-700 dark:text-[#FDE68A]" },
+    mint: { stroke: "#059669", gradient: ["#059669", "#34D399"], text: "text-emerald-700 dark:text-[#A7F3D0]" },
+    forest: { stroke: "#16A36F", gradient: ["#16A36F", "#18B8A2"], text: "text-emerald-700 dark:text-[#A7F3D0]" },
   };
 
   const selected = colorMap[color] || colorMap.emerald;
@@ -39,12 +39,12 @@ export default function CircularProgress({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.08)"
+          className="stroke-slate-200 dark:stroke-white/[0.08]"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
 
-        {/* Glowing Progress Circle */}
+        {/* Progress Circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -55,24 +55,24 @@ export default function CircularProgress({
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          className="transition-all duration-1000 ease-out drop-shadow-[0_0_8px_rgba(22,163,111,0.5)]"
+          className="transition-all duration-1000 ease-out drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(22,163,111,0.5)]"
         />
       </svg>
       
       {/* Center Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-1">
         {showPercentage && (
-          <span className="font-sans font-black text-lg sm:text-xl tracking-tight text-[#F5F7F4] font-mono">
+          <span className="font-sans font-black text-lg sm:text-xl tracking-tight text-slate-900 dark:text-[#F5F7F4] font-mono">
             {percentage}%
           </span>
         )}
         {label && (
-          <span className="text-[9px] text-[#94A3B8] font-bold uppercase tracking-wider font-mono">
+          <span className="text-[9px] text-slate-500 dark:text-[#94A3B8] font-bold uppercase tracking-wider font-mono">
             {label}
           </span>
         )}
         {sublabel && (
-          <span className="text-[8px] text-[#64748B]">
+          <span className="text-[8px] text-slate-400 dark:text-[#64748B]">
             {sublabel}
           </span>
         )}

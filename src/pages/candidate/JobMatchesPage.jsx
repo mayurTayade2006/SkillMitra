@@ -41,21 +41,21 @@ export default function JobMatchesPage() {
       <div className="space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/[0.08]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#22D3EE]/10 border border-[#22D3EE]/25 text-[#22D3EE] text-xs font-semibold mb-2 font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-[#22D3EE]/10 border border-cyan-200 dark:border-[#22D3EE]/25 text-cyan-800 dark:text-[#22D3EE] text-xs font-semibold mb-2 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-[#22D3EE] animate-pulse" />
               <span>REGIONAL TALENT PIPELINE</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight">
               Verified Job Opportunities
             </h1>
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1 font-mono">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] mt-1 font-mono">
               Live vacancies from Maharashtra employers matching your assessed neural skill graph.
             </p>
           </div>
 
-          <span className="px-3 py-1.5 rounded-lg bg-[#22D3EE]/10 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-bold font-mono">
+          <span className="px-3 py-1.5 rounded-lg bg-cyan-50 dark:bg-[#22D3EE]/10 border border-cyan-200 dark:border-[#22D3EE]/30 text-cyan-800 dark:text-[#22D3EE] text-xs font-bold font-mono">
             24 Active Openings
           </span>
         </div>
@@ -65,19 +65,19 @@ export default function JobMatchesPage() {
           
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by job role, employer, or skill..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0D141B] border border-white/[0.08] text-xs text-[#F5F7FA] placeholder-[#64748B] focus:outline-none focus:border-[#22D3EE]/50 transition-all font-mono"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-[#0D141B] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-900 dark:text-[#F5F7FA] placeholder-slate-400 dark:placeholder-[#64748B] focus:outline-none focus:border-sky-500 transition-all font-mono"
             />
           </div>
 
           {/* Location Filter Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-            <span className="text-xs text-[#64748B] font-bold font-mono px-1">
+            <span className="text-xs text-slate-500 dark:text-[#64748B] font-bold font-mono px-1">
               Hub:
             </span>
             {locations.map((loc) => (
@@ -86,8 +86,8 @@ export default function JobMatchesPage() {
                 onClick={() => setSelectedLocation(loc)}
                 className={`px-3 py-1 rounded-md text-xs font-bold transition-all font-mono ${
                   selectedLocation === loc
-                    ? 'bg-[#22D3EE] text-[#070B10]'
-                    : 'bg-[#0D141B] text-[#94A3B8] hover:text-[#F5F7FA] border border-white/[0.06]'
+                    ? 'bg-sky-600 text-white dark:bg-[#22D3EE] dark:text-[#070B10] shadow-sm'
+                    : 'bg-slate-100 dark:bg-[#0D141B] text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-[#F5F7FA] border border-slate-200 dark:border-white/[0.06]'
                 }`}
               >
                 {loc}
@@ -112,31 +112,31 @@ export default function JobMatchesPage() {
                     <img
                       src={job.logo}
                       alt={job.company}
-                      className="w-10 h-10 rounded-xl object-cover border border-white/[0.08]"
+                      className="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-white/[0.08] shadow-sm"
                     />
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#22D3EE]/10 text-[#22D3EE] border border-[#22D3EE]/30 text-xs font-bold font-mono">
+                    <span className="px-2.5 py-0.5 rounded-full bg-sky-50 dark:bg-[#22D3EE]/10 text-sky-800 dark:text-[#22D3EE] border border-sky-200 dark:border-[#22D3EE]/30 text-xs font-bold font-mono">
                       {job.matchScore}% Match
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#F5F7FA] group-hover:text-[#22D3EE] transition-colors">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F7FA] group-hover:text-sky-600 dark:group-hover:text-[#22D3EE] transition-colors">
                     {job.title}
                   </h3>
-                  <p className="text-xs text-[#64748B] font-mono">{job.company}</p>
+                  <p className="text-xs text-slate-500 dark:text-[#64748B] font-mono">{job.company}</p>
 
-                  <div className="mt-3 space-y-1 text-xs text-[#94A3B8] font-mono">
+                  <div className="mt-3 space-y-1 text-xs text-slate-600 dark:text-[#94A3B8] font-mono">
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#22D3EE]" />
+                      <MapPin className="w-3.5 h-3.5 text-sky-600 dark:text-[#22D3EE]" />
                       <span>{job.location}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[#4ADE80] font-bold">{job.salary}</span>
-                      <span className="text-white/20">·</span>
-                      <span className="text-[#64748B]">{job.postedDays}</span>
+                      <span className="text-emerald-600 dark:text-[#4ADE80] font-bold">{job.salary}</span>
+                      <span className="text-slate-300 dark:text-white/20">·</span>
+                      <span className="text-slate-400 dark:text-[#64748B]">{job.postedDays}</span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#94A3B8] mt-3 line-clamp-2 leading-relaxed bg-[#0D141B] p-3 rounded-xl border border-white/[0.04]">
+                  <p className="text-xs text-slate-600 dark:text-[#94A3B8] mt-3 line-clamp-2 leading-relaxed bg-slate-50 dark:bg-[#0D141B] p-3 rounded-xl border border-slate-200 dark:border-white/[0.04]">
                     {job.description}
                   </p>
 
@@ -145,7 +145,7 @@ export default function JobMatchesPage() {
                     {job.skillsRequired.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-0.5 rounded-md bg-[#0D141B] border border-white/[0.06] text-[#94A3B8] text-[10px] font-mono"
+                        className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#0D141B] border border-slate-200 dark:border-white/[0.06] text-slate-600 dark:text-[#94A3B8] text-[10px] font-mono"
                       >
                         {skill}
                       </span>
@@ -153,8 +153,8 @@ export default function JobMatchesPage() {
                   </div>
                 </div>
 
-                <div className="pt-3.5 border-t border-white/[0.06] flex items-center justify-between">
-                  <span className="text-[11px] text-[#64748B] font-mono">
+                <div className="pt-3.5 border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400 dark:text-[#64748B] font-mono">
                     {job.applicants} applied
                   </span>
 
@@ -163,8 +163,8 @@ export default function JobMatchesPage() {
                     disabled={hasApplied}
                     className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                       hasApplied
-                        ? 'bg-[#4ADE80]/15 text-[#4ADE80] border border-[#4ADE80]/30'
-                        : 'bg-gradient-to-r from-[#22D3EE] to-[#A78BFA] text-[#070B10] hover:opacity-90 shadow-glow-teal'
+                        ? 'bg-emerald-100 dark:bg-[#4ADE80]/15 text-emerald-800 dark:text-[#4ADE80] border border-emerald-300 dark:border-[#4ADE80]/30'
+                        : 'bg-gradient-to-r from-[#0284C7] to-[#7C3AED] dark:from-[#22D3EE] dark:to-[#A78BFA] text-white dark:text-[#070B10] hover:opacity-90 shadow-sm dark:shadow-glow-teal'
                     }`}
                   >
                     {hasApplied ? (

@@ -17,11 +17,11 @@ import {
 
 export default function SecurityCenterPage() {
   const securityControls = [
-    { title: "JWT Authentication", status: "Active", desc: "Stateless authentication with cryptographic 256-bit token rotation", badge: "RSA-256 Signatures", color: "#22D3EE" },
-    { title: "Data Encryption", status: "Active", desc: "AES-256 encryption at rest and TLS 1.3 cryptographic transport", badge: "FIPS 140-2 Level 3", color: "#4ADE80" },
-    { title: "Role-Based Access", status: "Active", desc: "5 granular stakeholder tiers with strict zero-trust boundaries", badge: "RBAC Enforced", color: "#A78BFA" },
-    { title: "Immutable Audit", status: "Active", desc: "Tamper-evident logging of verification and authentication events", badge: "Real-time Stream", color: "#F59E0B" },
-    { title: "Secure APIs", status: "Active", desc: "WAF edge filtering, rate limiting, and automated DDoS mitigation", badge: "Shield Protected", color: "#22D3EE" },
+    { title: "JWT Authentication", status: "Active", desc: "Stateless authentication with cryptographic 256-bit token rotation", badge: "RSA-256 Signatures", color: "#0284C7" },
+    { title: "Data Encryption", status: "Active", desc: "AES-256 encryption at rest and TLS 1.3 cryptographic transport", badge: "FIPS 140-2 Level 3", color: "#16A36F" },
+    { title: "Role-Based Access", status: "Active", desc: "5 granular stakeholder tiers with strict zero-trust boundaries", badge: "RBAC Enforced", color: "#7C3AED" },
+    { title: "Immutable Audit", status: "Active", desc: "Tamper-evident logging of verification and authentication events", badge: "Real-time Stream", color: "#D97706" },
+    { title: "Secure APIs", status: "Active", desc: "WAF edge filtering, rate limiting, and automated DDoS mitigation", badge: "Shield Protected", color: "#0284C7" },
   ];
 
   const recentActivity = [
@@ -37,28 +37,28 @@ export default function SecurityCenterPage() {
       <div className="space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/[0.08]">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A78BFA]/10 border border-[#A78BFA]/25 text-[#A78BFA] text-xs font-semibold mb-2 font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 dark:bg-[#A78BFA]/10 border border-violet-200 dark:border-[#A78BFA]/25 text-violet-800 dark:text-[#A78BFA] text-xs font-semibold mb-2 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500 dark:bg-[#A78BFA] animate-pulse" />
               <span>ZERO-TRUST GOVERNANCE CENTER</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight">
               Security, Cryptography & Trust
             </h1>
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1 font-mono">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] mt-1 font-mono">
               Public data governance, cryptographic integrity protocols, and compliance standards for Maharashtra.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="p-3.5 rounded-xl bg-[#0D141B] border border-white/[0.08] flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#A78BFA]/15 text-[#A78BFA] flex items-center justify-center font-bold">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#0D141B] border border-slate-200 dark:border-white/[0.08] flex items-center gap-3 shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-violet-100 dark:bg-[#A78BFA]/15 text-violet-700 dark:text-[#A78BFA] flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <div className="text-[10px] uppercase font-bold text-[#64748B] font-mono">Security Health Score</div>
-                <div className="text-lg font-black text-[#F5F7FA] font-mono">92 / 100</div>
+                <div className="text-[10px] uppercase font-bold text-slate-400 dark:text-[#64748B] font-mono">Security Health Score</div>
+                <div className="text-lg font-black text-slate-900 dark:text-[#F5F7FA] font-mono">92 / 100</div>
               </div>
             </div>
           </div>
@@ -66,8 +66,8 @@ export default function SecurityCenterPage() {
 
         {/* Security Controls System */}
         <div className="space-y-3">
-          <div className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-[#22D3EE]" />
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#64748B] font-mono flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-sky-600 dark:text-[#22D3EE]" />
             <span>Active Cryptographic Safeguards</span>
           </div>
 
@@ -76,15 +76,15 @@ export default function SecurityCenterPage() {
               <div key={idx} className="surface-card rounded-xl p-4.5 space-y-3 flex flex-col justify-between border-t-2" style={{ borderTopColor: ctrl.color }}>
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs font-bold text-[#F5F7FA]">{ctrl.title}</span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#4ADE80]" />
+                    <span className="text-xs font-bold text-slate-900 dark:text-[#F5F7FA]">{ctrl.title}</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-[#4ADE80]" />
                   </div>
-                  <p className="text-[11px] text-[#94A3B8] leading-relaxed">
+                  <p className="text-[11px] text-slate-600 dark:text-[#94A3B8] leading-relaxed">
                     {ctrl.desc}
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-white/[0.06] text-[10px] font-mono" style={{ color: ctrl.color }}>
+                <div className="pt-2.5 border-t border-slate-100 dark:border-white/[0.06] text-[10px] font-mono font-bold" style={{ color: ctrl.color }}>
                   {ctrl.badge}
                 </div>
               </div>
@@ -93,23 +93,23 @@ export default function SecurityCenterPage() {
         </div>
 
         {/* Recent Audit Activity Log Table */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#121B23] overflow-hidden">
-          <div className="p-4 sm:p-5 border-b border-white/[0.06] flex items-center justify-between">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121B23] overflow-hidden shadow-sm transition-colors">
+          <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-[#22D3EE]" />
-              <h3 className="text-xs font-bold text-[#F5F7FA] font-mono">
+              <Terminal className="w-4 h-4 text-sky-600 dark:text-[#22D3EE]" />
+              <h3 className="text-xs font-bold text-slate-900 dark:text-[#F5F7FA] font-mono">
                 Recent Security Audit Trail & Event Stream
               </h3>
             </div>
-            <span className="text-xs text-[#4ADE80] font-mono flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+            <span className="text-xs text-emerald-700 dark:text-[#4ADE80] font-mono flex items-center gap-1.5 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#4ADE80] animate-pulse" />
               Live Immutable Stream
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-[540px] text-left text-xs font-mono">
-              <thead className="bg-[#0D141B] text-[#64748B] uppercase text-[10px] font-bold border-b border-white/[0.08]">
+              <thead className="bg-slate-50 dark:bg-[#0D141B] text-slate-500 dark:text-[#64748B] uppercase text-[10px] font-bold border-b border-slate-200 dark:border-white/[0.08]">
                 <tr>
                   <th className="py-3.5 px-5">Timestamp</th>
                   <th className="py-3.5 px-5">Activity Event</th>
@@ -117,20 +117,20 @@ export default function SecurityCenterPage() {
                   <th className="py-3.5 px-5 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
                 {recentActivity.map((act, idx) => (
-                  <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-5 text-[#64748B]">
+                  <tr key={idx} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3.5 px-5 text-slate-400 dark:text-[#64748B]">
                       {act.time}
                     </td>
-                    <td className="py-3.5 px-5 text-[#F5F7FA]">
+                    <td className="py-3.5 px-5 text-slate-900 dark:text-[#F5F7FA]">
                       {act.event}
                     </td>
-                    <td className="py-3.5 px-5 text-[#22D3EE] text-[11px]">
+                    <td className="py-3.5 px-5 text-sky-700 dark:text-[#22D3EE] text-[11px]">
                       {act.hash}
                     </td>
                     <td className="py-3.5 px-5 text-right">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#4ADE80]/10 text-[#4ADE80] border border-[#4ADE80]/30 text-[10px] font-bold">
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-[#4ADE80]/10 text-emerald-800 dark:text-[#4ADE80] border border-emerald-200 dark:border-[#4ADE80]/30 text-[10px] font-bold">
                         {act.status}
                       </span>
                     </td>
