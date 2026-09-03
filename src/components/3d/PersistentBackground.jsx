@@ -10,12 +10,13 @@ export default function PersistentBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
     let animId;
     let time = 0;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    let isMobile = width < 768;
 
     let mouseX = width / 2;
     let mouseY = height / 2;
@@ -25,11 +26,12 @@ export default function PersistentBackground() {
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
+      isMobile = width < 768;
       canvas.width = width;
       canvas.height = height;
     };
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     const onMouseMove = (e) => {
       targetMouseX = e.clientX;
@@ -38,36 +40,17 @@ export default function PersistentBackground() {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
     // -------------------------------------------------------------
-    // 1. CIRCUIT GRID & DATA PULSES (Image 2 Reference)
+    // 1. CIRCUIT GRID & DATA PULSES
     // -------------------------------------------------------------
     const circuitLines = [
-      // Top Left Circuit Network
-      { path: [[0.05, 0.08], [0.15, 0.08], [0.15, 0.18], [0.28, 0.18], [0.28, 0.28], [0.38, 0.28]], progress: 0, speed: 0.003, color: '#38BDF8' },
-      { path: [[0.02, 0.22], [0.12, 0.22], [0.12, 0.32], [0.22, 0.32], [0.22, 0.42]], progress: 0.4, speed: 0.0025, color: '#A78BFA' },
-      { path: [[0.20, 0.02], [0.20, 0.12], [0.32, 0.12], [0.32, 0.22]], progress: 0.7, speed: 0.0035, color: '#22D3EE' },
-
-      // Top Right Circuit Network
+      { path: [[0.05, 0.08], [0.15, 0.08], [0.15, 0.18], [0.28, 0.18], [0.28, 0.28]], progress: 0, speed: 0.003, color: '#38BDF8' },
       { path: [[0.95, 0.06], [0.82, 0.06], [0.82, 0.16], [0.70, 0.16], [0.70, 0.26]], progress: 0.2, speed: 0.0028, color: '#22D3EE' },
-      { path: [[0.98, 0.18], [0.88, 0.18], [0.88, 0.28], [0.78, 0.28], [0.78, 0.38]], progress: 0.6, speed: 0.0032, color: '#C084FC' },
-      { path: [[0.80, 0.02], [0.80, 0.10], [0.65, 0.10], [0.65, 0.20]], progress: 0.85, speed: 0.0022, color: '#38BDF8' },
-
-      // Bottom Left Circuit Network
-      { path: [[0.06, 0.92], [0.18, 0.92], [0.18, 0.80], [0.30, 0.80], [0.30, 0.70]], progress: 0.35, speed: 0.003, color: '#A78BFA' },
-      { path: [[0.02, 0.78], [0.14, 0.78], [0.14, 0.68], [0.25, 0.68]], progress: 0.75, speed: 0.0026, color: '#22D3EE' },
-
-      // Bottom Right Circuit Network
-      { path: [[0.95, 0.90], [0.84, 0.90], [0.84, 0.78], [0.72, 0.78], [0.72, 0.68]], progress: 0.15, speed: 0.0034, color: '#38BDF8' },
-      { path: [[0.90, 0.98], [0.90, 0.85], [0.76, 0.85], [0.76, 0.74]], progress: 0.55, speed: 0.0029, color: '#C084FC' },
+      { path: [[0.06, 0.92], [0.18, 0.92], [0.18, 0.80], [0.30, 0.80]], progress: 0.35, speed: 0.003, color: '#A78BFA' },
+      { path: [[0.95, 0.90], [0.84, 0.90], [0.84, 0.78], [0.72, 0.78]], progress: 0.15, speed: 0.0034, color: '#38BDF8' },
     ];
 
     // -------------------------------------------------------------
-    // 2. 3D PARTICLE MESH WAVE GRID (Image 3 Reference)
-    // -------------------------------------------------------------
-    const cols = 48;
-    const rows = 28;
-
-    // -------------------------------------------------------------
-    // 3. INTERACTIVE CLICK EXPLOSION & SHOCKWAVE SYSTEM
+    // 2. INTERACTIVE CLICK EXPLOSION SYSTEM
     // -------------------------------------------------------------
     let clickBursts = [];
     let clickBeams = [];
@@ -81,48 +64,44 @@ export default function PersistentBackground() {
       shockwaves.push({
         x: cx,
         y: cy,
-        radius: 5,
-        maxRadius: Math.max(width, height) * 0.45,
-        alpha: 0.95,
-        lineWidth: 3.5,
-        speed: 12 + Math.random() * 4,
+        radius: 4,
+        maxRadius: isMobile ? 180 : Math.max(width, height) * 0.4,
+        alpha: 0.9,
+        lineWidth: isMobile ? 2.0 : 3.0,
+        speed: isMobile ? 9 : 13,
         color: Math.random() > 0.5 ? '#22D3EE' : '#A78BFA',
       });
 
-      // 2. Radiating Circuit Laser Beams (8 Cardinal/Diagonal Beams)
-      const beamCount = 8;
+      // 2. Radiating Laser Beams
+      const beamCount = isMobile ? 5 : 8;
       for (let i = 0; i < beamCount; i++) {
         const angle = (Math.PI * 2 * i) / beamCount;
-        const length = 120 + Math.random() * 160;
         clickBeams.push({
           x: cx,
           y: cy,
-          vx: Math.cos(angle) * (14 + Math.random() * 6),
-          vy: Math.sin(angle) * (14 + Math.random() * 6),
-          length,
-          currentLength: 0,
+          vx: Math.cos(angle) * (isMobile ? 10 : 14),
+          vy: Math.sin(angle) * (isMobile ? 10 : 14),
           color: i % 2 === 0 ? '#22D3EE' : '#C084FC',
           alpha: 1.0,
-          tail: [],
         });
       }
 
-      // 3. Radiant Glowing Embers & Micro-Sparks
-      const sparkCount = 26;
+      // 3. Glowing Micro-Sparks
+      const sparkCount = isMobile ? 10 : 20;
       for (let i = 0; i < sparkCount; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 2.5 + Math.random() * 8.0;
+        const speed = 2.0 + Math.random() * (isMobile ? 4.5 : 7.0);
         const isCyan = Math.random() > 0.45;
         clickBursts.push({
           x: cx,
           y: cy,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.8, // gentle upward burst
-          size: 2.0 + Math.random() * 4.5,
+          vy: Math.sin(angle) * speed - 1.5,
+          size: 1.8 + Math.random() * 3.0,
           color: isCyan ? '#22D3EE' : '#C084FC',
-          glowColor: isCyan ? 'rgba(34, 211, 238, 0.8)' : 'rgba(192, 132, 252, 0.8)',
+          glowColor: isCyan ? 'rgba(34, 211, 238, 0.7)' : 'rgba(192, 132, 252, 0.7)',
           alpha: 1.0,
-          decay: 0.015 + Math.random() * 0.012,
+          decay: isMobile ? 0.025 : 0.016,
         });
       }
     };
@@ -130,19 +109,21 @@ export default function PersistentBackground() {
     window.addEventListener('pointerdown', onGlobalClick, { passive: true });
 
     // -------------------------------------------------------------
-    // DRAW FIBER-OPTIC SWIRL VORTEX (Image 1 Swirls)
+    // DRAW FIBER-OPTIC SWIRL VORTEX
     // -------------------------------------------------------------
-    const drawSpiralVortex = (cx, cy, radius, startAngle, color, glowColor, alpha = 0.8) => {
+    const drawSpiralVortex = (cx, cy, radius, startAngle, color, alpha = 0.7) => {
       ctx.save();
       ctx.globalAlpha = alpha;
-      ctx.shadowColor = glowColor;
-      ctx.shadowBlur = 18;
+      if (!isMobile) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 14;
+      }
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1.8;
+      ctx.lineWidth = 1.6;
 
       ctx.beginPath();
-      const loops = 3.2;
-      for (let a = 0; a < Math.PI * 2 * loops; a += 0.12) {
+      const loops = 2.8;
+      for (let a = 0; a < Math.PI * 2 * loops; a += 0.18) {
         const r = (radius * a) / (Math.PI * 2 * loops);
         const curA = startAngle + a;
         const px = cx + Math.cos(curA) * r;
@@ -152,12 +133,9 @@ export default function PersistentBackground() {
       }
       ctx.stroke();
 
-      // Glowing Center Core Dot
       ctx.beginPath();
-      ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 3.0, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = '#FFFFFF';
-      ctx.shadowBlur = 12;
       ctx.fill();
 
       ctx.restore();
@@ -171,48 +149,45 @@ export default function PersistentBackground() {
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      ctx.clearRect(0, 0, width, height);
-
-      // Deep Dark Space / Midnight Canvas Base
+      // Deep Dark Space Base
       if (isDark) {
         ctx.fillStyle = '#060A10';
         ctx.fillRect(0, 0, width, height);
 
         // Ambient Color Atmosphere Blooms
-        const gradCyan = ctx.createRadialGradient(width * 0.25, height * 0.45, 10, width * 0.25, height * 0.45, width * 0.55);
-        gradCyan.addColorStop(0, 'rgba(14, 116, 144, 0.25)');
-        gradCyan.addColorStop(0.6, 'rgba(6, 78, 120, 0.08)');
+        const gradCyan = ctx.createRadialGradient(width * 0.25, height * 0.4, 10, width * 0.25, height * 0.4, Math.max(width, height) * 0.55);
+        gradCyan.addColorStop(0, 'rgba(14, 116, 144, 0.22)');
+        gradCyan.addColorStop(0.6, 'rgba(6, 78, 120, 0.06)');
         gradCyan.addColorStop(1, 'rgba(6, 10, 16, 0)');
         ctx.fillStyle = gradCyan;
         ctx.fillRect(0, 0, width, height);
 
-        const gradViolet = ctx.createRadialGradient(width * 0.8, height * 0.65, 10, width * 0.8, height * 0.65, width * 0.6);
-        gradViolet.addColorStop(0, 'rgba(109, 40, 217, 0.22)');
-        gradViolet.addColorStop(0.6, 'rgba(76, 29, 149, 0.06)');
+        const gradViolet = ctx.createRadialGradient(width * 0.8, height * 0.6, 10, width * 0.8, height * 0.6, Math.max(width, height) * 0.55);
+        gradViolet.addColorStop(0, 'rgba(109, 40, 217, 0.18)');
+        gradViolet.addColorStop(0.6, 'rgba(76, 29, 149, 0.05)');
         gradViolet.addColorStop(1, 'rgba(6, 10, 16, 0)');
         ctx.fillStyle = gradViolet;
         ctx.fillRect(0, 0, width, height);
       } else {
-        // Light Mode Ethereal Gradient
+        // Light Mode Base
         ctx.fillStyle = '#F8FAFC';
         ctx.fillRect(0, 0, width, height);
 
-        const gradLight = ctx.createRadialGradient(width * 0.5, height * 0.4, 20, width * 0.5, height * 0.4, width * 0.7);
-        gradLight.addColorStop(0, 'rgba(224, 242, 254, 0.85)');
-        gradLight.addColorStop(0.7, 'rgba(240, 249, 255, 0.45)');
+        const gradLight = ctx.createRadialGradient(width * 0.5, height * 0.4, 20, width * 0.5, height * 0.4, width * 0.6);
+        gradLight.addColorStop(0, 'rgba(224, 242, 254, 0.8)');
+        gradLight.addColorStop(0.7, 'rgba(240, 249, 255, 0.4)');
         gradLight.addColorStop(1, 'rgba(248, 250, 252, 0)');
         ctx.fillStyle = gradLight;
         ctx.fillRect(0, 0, width, height);
       }
 
       // =========================================================
-      // LAYER 1: CYBER CIRCUIT TRACES & DATA PACKETS (Image 2)
+      // LAYER 1: CYBER CIRCUIT TRACES & DATA PACKETS
       // =========================================================
       ctx.save();
       circuitLines.forEach((circuit) => {
         circuit.progress = (circuit.progress + circuit.speed) % 1;
 
-        // Draw Circuit Track Lines
         ctx.beginPath();
         circuit.path.forEach((pt, idx) => {
           const px = pt[0] * width;
@@ -220,24 +195,13 @@ export default function PersistentBackground() {
           if (idx === 0) ctx.moveTo(px, py);
           else ctx.lineTo(px, py);
         });
-        ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.14)' : 'rgba(2, 132, 199, 0.16)';
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(2, 132, 199, 0.14)';
+        ctx.lineWidth = 1.0;
         ctx.stroke();
 
-        // Draw Circuit Solder Nodes
-        circuit.path.forEach((pt) => {
-          const px = pt[0] * width;
-          const py = pt[1] * height;
-          ctx.beginPath();
-          ctx.arc(px, py, 2.0, 0, Math.PI * 2);
-          ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(2, 132, 199, 0.4)';
-          ctx.fill();
-        });
-
-        // Calculate and Draw Glowing Energy Pulse Traveling on the Path
+        // Energy Pulse
         const totalSegments = circuit.path.length - 1;
-        const totalDist = totalSegments;
-        const currentSegmentProgress = circuit.progress * totalDist;
+        const currentSegmentProgress = circuit.progress * totalSegments;
         const segIdx = Math.min(Math.floor(currentSegmentProgress), totalSegments - 1);
         const segT = currentSegmentProgress - segIdx;
 
@@ -247,120 +211,109 @@ export default function PersistentBackground() {
           const pulseX = (p1[0] + (p2[0] - p1[0]) * segT) * width;
           const pulseY = (p1[1] + (p2[1] - p1[1]) * segT) * height;
 
-          ctx.shadowColor = circuit.color;
-          ctx.shadowBlur = 12;
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 3.2, 0, Math.PI * 2);
+          ctx.arc(pulseX, pulseY, 2.5, 0, Math.PI * 2);
           ctx.fillStyle = '#FFFFFF';
           ctx.fill();
 
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 6.0, 0, Math.PI * 2);
-          ctx.fillStyle = circuit.color + (isDark ? '66' : '88');
+          ctx.arc(pulseX, pulseY, 5.0, 0, Math.PI * 2);
+          ctx.fillStyle = circuit.color + (isDark ? '55' : '77');
           ctx.fill();
         }
       });
       ctx.restore();
 
       // =========================================================
-      // LAYER 2: 3D PARTICLE MESH WAVE (Image 3)
+      // LAYER 2: 3D PARTICLE MESH WAVE (Adaptive Resolution)
       // =========================================================
       ctx.save();
+      const cols = isMobile ? 18 : 36;
+      const rows = isMobile ? 12 : 22;
       const cellW = width / (cols - 1);
       const cellH = height / (rows - 1);
-      const mouseParallaxX = (mouseX - width / 2) * 0.035;
-      const mouseParallaxY = (mouseY - height / 2) * 0.035;
+      const mouseParallaxX = (mouseX - width / 2) * 0.025;
+      const mouseParallaxY = (mouseY - height / 2) * 0.025;
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           const normX = c / cols;
           const normY = r / rows;
 
-          // Multi-frequency undulating wave equation
-          const wave1 = Math.sin(normX * 5.2 + time * 1.8) * Math.cos(normY * 4.0 + time * 1.2) * 24;
-          const wave2 = Math.sin((normX + normY) * 6.5 + time * 2.2) * 14;
-          const wave3 = Math.cos(normX * 8.0 - time * 1.5) * 8;
-          const waveElevation = wave1 + wave2 + wave3;
+          const wave1 = Math.sin(normX * 4.8 + time * 1.6) * Math.cos(normY * 3.6 + time * 1.0) * (isMobile ? 16 : 22);
+          const wave2 = Math.sin((normX + normY) * 5.5 + time * 1.8) * (isMobile ? 8 : 12);
+          const waveElevation = wave1 + wave2;
 
           const px = c * cellW + mouseParallaxX;
           const py = r * cellH + waveElevation + mouseParallaxY;
 
-          // Particle brightness and size based on elevation crests
-          const depthAlpha = Math.max(0.08, (waveElevation + 38) / 76);
-          const pSize = 1.0 + depthAlpha * 1.8;
-
-          // Color interpolate between Cyan and Violet across elevation
+          const depthAlpha = Math.max(0.08, (waveElevation + 30) / 60);
+          const pSize = 1.0 + depthAlpha * (isMobile ? 1.2 : 1.6);
           const isCyanWave = (c + r) % 3 !== 0;
+
           ctx.beginPath();
           ctx.arc(px, py, pSize, 0, Math.PI * 2);
           ctx.fillStyle = isDark
-            ? (isCyanWave ? `rgba(34, 211, 238, ${depthAlpha * 0.45})` : `rgba(167, 139, 250, ${depthAlpha * 0.45})`)
-            : (isCyanWave ? `rgba(2, 132, 199, ${depthAlpha * 0.35})` : `rgba(124, 58, 237, ${depthAlpha * 0.35})`);
+            ? (isCyanWave ? `rgba(34, 211, 238, ${depthAlpha * 0.4})` : `rgba(167, 139, 250, ${depthAlpha * 0.4})`)
+            : (isCyanWave ? `rgba(2, 132, 199, ${depthAlpha * 0.3})` : `rgba(124, 58, 237, ${depthAlpha * 0.3})`);
           ctx.fill();
         }
       }
       ctx.restore();
 
       // =========================================================
-      // LAYER 3: LUMINOUS NEON CYBER FIBER RIBBONS (Image 1)
+      // LAYER 3: LUMINOUS NEON CYBER FIBER RIBBONS
       // =========================================================
       ctx.save();
-      const ribbonCount = 7;
-      const centerY = height * 0.55;
+      const ribbonCount = isMobile ? 3 : 6;
+      const ribbonStep = isMobile ? 36 : 18;
+      const centerY = height * 0.52;
 
       for (let i = 0; i < ribbonCount; i++) {
-        const offset = i * 0.28;
-        const isCyan = i < 4;
+        const offset = i * 0.32;
+        const isCyan = i < (ribbonCount / 2);
 
         ctx.beginPath();
-        const step = 18;
-        for (let x = 0; x <= width + step; x += step) {
+        for (let x = 0; x <= width + ribbonStep; x += ribbonStep) {
           const nx = x / width;
-
-          // Flowing ribbon harmonic wave formula
-          const y1 = Math.sin(nx * 3.4 + time * 1.4 + offset) * (height * 0.16);
-          const y2 = Math.cos(nx * 5.2 - time * 1.1 + offset * 1.5) * (height * 0.08);
-          const y3 = Math.sin((nx * 8.0) + time * 2.0) * (height * 0.035);
-          const y = centerY + y1 + y2 + y3 + (i - 3) * 14 + (mouseY - height / 2) * 0.05;
+          const y1 = Math.sin(nx * 3.2 + time * 1.3 + offset) * (height * 0.14);
+          const y2 = Math.cos(nx * 4.8 - time * 1.0 + offset * 1.4) * (height * 0.07);
+          const y = centerY + y1 + y2 + (i - ribbonCount / 2) * 12 + (mouseY - height / 2) * 0.03;
 
           if (x === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
 
-        // Dual Tone Neon Glowing Ribbon Strokes
         const strokeColor = isCyan
           ? (isDark ? '#22D3EE' : '#0284C7')
           : (isDark ? '#C084FC' : '#7C3AED');
         
-        ctx.shadowColor = strokeColor;
-        ctx.shadowBlur = isDark ? 22 : 12;
-        ctx.strokeStyle = strokeColor + (isDark ? (i === 2 ? 'CC' : '77') : '88');
-        ctx.lineWidth = i === 2 ? 3.0 : 1.6;
-        ctx.stroke();
-
-        // Inner Specular White Core Streak for Central Crest
-        if (i === 2) {
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-          ctx.lineWidth = 1.0;
-          ctx.stroke();
+        if (!isMobile) {
+          ctx.shadowColor = strokeColor;
+          ctx.shadowBlur = isDark ? 18 : 10;
         }
+        ctx.strokeStyle = strokeColor + (isDark ? '99' : '88');
+        ctx.lineWidth = i === 1 ? 2.4 : 1.4;
+        ctx.stroke();
       }
 
-      // Swirling Fiber Spiral Vortices (Image 1 Reference)
-      const swirl1X = width * 0.52 + Math.sin(time * 0.8) * 40;
-      const swirl1Y = centerY - height * 0.12 + Math.cos(time * 0.6) * 30;
-      drawSpiralVortex(swirl1X, swirl1Y, 36, time * 0.8, '#38BDF8', 'rgba(56, 189, 248, 0.8)', isDark ? 0.75 : 0.5);
+      // Single Swirl Vortex on Mobile, Dual on Desktop
+      const swirl1X = width * (isMobile ? 0.65 : 0.52) + Math.sin(time * 0.8) * 30;
+      const swirl1Y = centerY - height * 0.10 + Math.cos(time * 0.6) * 20;
+      drawSpiralVortex(swirl1X, swirl1Y, isMobile ? 26 : 34, time * 0.8, '#38BDF8', isDark ? 0.7 : 0.45);
 
-      const swirl2X = width * 0.38 + Math.cos(time * 0.7) * 30;
-      const swirl2Y = centerY + height * 0.16 + Math.sin(time * 0.9) * 25;
-      drawSpiralVortex(swirl2X, swirl2Y, 32, -time * 0.9, '#C084FC', 'rgba(192, 132, 252, 0.8)', isDark ? 0.75 : 0.5);
+      if (!isMobile) {
+        const swirl2X = width * 0.38 + Math.cos(time * 0.7) * 25;
+        const swirl2Y = centerY + height * 0.14 + Math.sin(time * 0.9) * 20;
+        drawSpiralVortex(swirl2X, swirl2Y, 30, -time * 0.9, '#C084FC', isDark ? 0.7 : 0.45);
+      }
       ctx.restore();
 
       // =========================================================
-      // INTERACTIVE CLICK SHOCKWAVES, BEAMS & SPARKS
+      // LAYER 4: INTERACTIVE CLICK SHOCKWAVES & BEAMS
       // =========================================================
 
-      // 1. Shockwave Rings
+      // 1. Shockwaves
       for (let i = shockwaves.length - 1; i >= 0; i--) {
         const sw = shockwaves[i];
         sw.radius += sw.speed;
@@ -375,22 +328,24 @@ export default function PersistentBackground() {
         ctx.beginPath();
         ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
         ctx.strokeStyle = sw.color;
-        ctx.shadowColor = sw.color;
-        ctx.shadowBlur = 24;
+        if (!isMobile) {
+          ctx.shadowColor = sw.color;
+          ctx.shadowBlur = 18;
+        }
         ctx.lineWidth = sw.lineWidth * sw.alpha;
-        ctx.globalAlpha = sw.alpha * 0.85;
+        ctx.globalAlpha = sw.alpha * 0.8;
         ctx.stroke();
         ctx.restore();
       }
 
-      // 2. Circuit Laser Beams
+      // 2. Beams
       for (let i = clickBeams.length - 1; i >= 0; i--) {
         const b = clickBeams[i];
         b.x += b.vx;
         b.y += b.vy;
-        b.vx *= 0.94;
-        b.vy *= 0.94;
-        b.alpha *= 0.95;
+        b.vx *= 0.92;
+        b.vy *= 0.92;
+        b.alpha *= 0.93;
 
         if (b.alpha <= 0.05) {
           clickBeams.splice(i, 1);
@@ -399,30 +354,27 @@ export default function PersistentBackground() {
 
         ctx.save();
         ctx.beginPath();
-        ctx.moveTo(b.x - b.vx * 3.5, b.y - b.vy * 3.5);
+        ctx.moveTo(b.x - b.vx * 3.0, b.y - b.vy * 3.0);
         ctx.lineTo(b.x, b.y);
         ctx.strokeStyle = b.color;
-        ctx.shadowColor = b.color;
-        ctx.shadowBlur = 16;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = isMobile ? 1.8 : 2.2;
         ctx.globalAlpha = b.alpha;
         ctx.stroke();
 
-        // Glowing Beam Head
         ctx.beginPath();
-        ctx.arc(b.x, b.y, 3.5, 0, Math.PI * 2);
+        ctx.arc(b.x, b.y, 2.5, 0, Math.PI * 2);
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
         ctx.restore();
       }
 
-      // 3. Glowing Embers & Micro-Sparks
+      // 3. Sparks
       for (let i = clickBursts.length - 1; i >= 0; i--) {
         const p = clickBursts[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.08; // subtle gravity
-        p.vx *= 0.97;
+        p.vy += 0.08;
+        p.vx *= 0.96;
         p.alpha -= p.decay;
 
         if (p.alpha <= 0) {
@@ -432,17 +384,9 @@ export default function PersistentBackground() {
 
         ctx.save();
         ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.shadowColor = p.glowColor;
-        ctx.shadowBlur = 14;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFFFFF';
         ctx.fill();
         ctx.restore();
       }

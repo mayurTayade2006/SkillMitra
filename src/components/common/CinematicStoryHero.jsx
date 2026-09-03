@@ -116,10 +116,10 @@ export default function CinematicStoryHero() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/35 pointer-events-none" />
 
         {/* Top Left Floating Phase Pill */}
-        <div className="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 z-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/65 backdrop-blur-md border border-white/[0.18] text-xs font-mono font-bold shadow-lg">
+        <div className="absolute top-2.5 left-2.5 sm:top-5 sm:left-5 z-20">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/[0.18] text-[10px] sm:text-xs font-mono font-bold shadow-lg">
             <span
-              className="w-2 h-2 rounded-full animate-pulse shadow-sm"
+              className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full animate-pulse shadow-sm"
               style={{ backgroundColor: currentScene.accent, boxShadow: `0 0 8px ${currentScene.accent}` }}
             />
             <span className="text-white/95">
@@ -133,23 +133,23 @@ export default function CinematicStoryHero() {
         </div>
 
         {/* Top Right Play / Pause Toggle */}
-        <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-20">
+        <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 z-20">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="p-2.5 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/[0.18] text-white/95 hover:text-white transition-all shadow-lg flex items-center justify-center group"
+            className="p-2 sm:p-2.5 rounded-full bg-black/70 hover:bg-black/85 backdrop-blur-md border border-white/[0.18] text-white/95 hover:text-white transition-all shadow-lg flex items-center justify-center group"
             title={isPlaying ? "Pause cinematic story" : "Play cinematic story"}
           >
             {isPlaying ? (
-              <Pause className="w-3.5 h-3.5" />
+              <Pause className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
             ) : (
-              <Play className="w-3.5 h-3.5 fill-current translate-x-0.5" />
+              <Play className="w-3 sm:w-3.5 h-3 sm:h-3.5 fill-current translate-x-0.5" />
             )}
           </button>
         </div>
 
-        {/* Bottom Interactive Chapter Stepper / Scrubber Bar (Discrete, Clean, Zero Image Block) */}
-        <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-5 sm:right-5 z-20">
-          <div className="p-1 sm:p-1.5 rounded-xl bg-black/75 backdrop-blur-xl border border-white/[0.14] grid grid-cols-5 gap-1 sm:gap-2 shadow-2xl">
+        {/* Bottom Interactive Chapter Stepper / Scrubber Bar */}
+        <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-5 sm:right-5 z-20">
+          <div className="p-1 sm:p-1.5 rounded-lg sm:rounded-xl bg-black/80 backdrop-blur-xl border border-white/[0.14] grid grid-cols-5 gap-1 sm:gap-2 shadow-2xl">
             {STORY_SCENES.map((scene, idx) => {
               const isActive = currentIndex === idx;
               const isPassed = currentIndex > idx;
@@ -158,33 +158,34 @@ export default function CinematicStoryHero() {
                 <button
                   key={scene.id}
                   onClick={() => handleSelectScene(idx)}
-                  className="relative group py-1.5 px-1 sm:px-2 rounded-lg text-left transition-all overflow-hidden"
+                  className="relative group py-1 sm:py-1.5 px-1 sm:px-2 rounded-md sm:rounded-lg text-center sm:text-left transition-all overflow-hidden"
                 >
                   {/* Progress background bar for active scene */}
-                  <div className="absolute inset-0 bg-white/[0.06] rounded-lg" />
+                  <div className="absolute inset-0 bg-white/[0.06] rounded-md sm:rounded-lg" />
                   {isActive && (
                     <motion.div
-                      className="absolute inset-0 bg-white/[0.22] rounded-lg origin-left"
+                      className="absolute inset-0 bg-white/[0.22] rounded-md sm:rounded-lg origin-left"
                       style={{ width: `${progress}%` }}
                     />
                   )}
                   {isPassed && (
-                    <div className="absolute inset-0 bg-white/[0.14] rounded-lg" />
+                    <div className="absolute inset-0 bg-white/[0.14] rounded-md sm:rounded-lg" />
                   )}
 
-                  <div className="relative z-10 flex items-center justify-between">
+                  <div className="relative z-10 flex items-center justify-center sm:justify-between">
                     <span
-                      className={`text-[9px] sm:text-[10px] font-mono font-bold transition-colors truncate ${
+                      className={`text-[8px] sm:text-[10px] font-mono font-bold transition-colors truncate ${
                         isActive
                           ? 'text-white font-extrabold'
                           : 'text-white/50 group-hover:text-white/80'
                       }`}
                     >
-                      {scene.phase} {scene.tag}
+                      <span className="inline sm:hidden">{scene.phase}</span>
+                      <span className="hidden sm:inline">{scene.phase} {scene.tag}</span>
                     </span>
                     {isActive && (
                       <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0 ml-1"
+                        className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full shrink-0 ml-0.5 sm:ml-1 hidden sm:inline-block"
                         style={{ backgroundColor: scene.accent, boxShadow: `0 0 6px ${scene.accent}` }}
                       />
                     )}
